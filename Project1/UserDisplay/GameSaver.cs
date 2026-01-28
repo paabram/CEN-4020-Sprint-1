@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Ass1
+namespace FileIO
 {
     public class GameSaver
     {
@@ -68,3 +68,4 @@ namespace Ass1
         }
     }
 }
+
