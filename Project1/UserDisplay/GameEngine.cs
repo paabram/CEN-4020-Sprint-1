@@ -1,6 +1,6 @@
 using System;
 
-namespace Ass1
+namespace GameEngine
 {
     public class GameState
     {
@@ -93,3 +93,4 @@ namespace Ass1
 
     
 }
+
