@@ -8,6 +8,7 @@ namespace Ass1
         // Save format:
         // line1: points
         // line2: lastRow,lastCol
+        // line3: nextNum
         // next 5 lines: board rows with "." for empty
         public void Save(string file, GameState state)
         {
@@ -18,6 +19,7 @@ namespace Ass1
             {
                 w.WriteLine(state.Points);
                 w.WriteLine(state.LastRow + "," + state.LastCol);
+                w.WriteLine(state.NextNum);
 
                 for (int r = 0; r < GameEngine.Size; r++)
                 {
@@ -45,11 +47,13 @@ namespace Ass1
             int lastRow = int.Parse(last[0]);
             int lastCol = int.Parse(last[1]);
 
+            int nextNum = int.Parse(lines[2].Trim());
+
             int?[,] board = new int?[GameEngine.Size, GameEngine.Size];
 
             for (int r = 0; r < GameEngine.Size; r++)
             {
-                string[] parts = lines[r + 2].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] parts = lines[r + 3].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length != GameEngine.Size)
                     throw new Exception("Invalid board row at r=" + r);
 
@@ -63,6 +67,7 @@ namespace Ass1
             st.Points = points;
             st.LastRow = lastRow;
             st.LastCol = lastCol;
+            st.NextNum = nextNum;
             st.Board = board;
             return st;
         }

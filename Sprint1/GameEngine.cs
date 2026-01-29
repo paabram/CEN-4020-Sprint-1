@@ -8,6 +8,7 @@ namespace Ass1
         public int Points;
         public int LastRow;
         public int LastCol;
+        public int NextNum;
     }
     public class GameEngine
     {
@@ -43,6 +44,12 @@ namespace Ass1
         {
             earned = 0;
 
+            // check win condition
+            if (NextNum > Size * Size)
+            {
+                Console.WriteLine("All squares filled! You win!");
+                return false;
+            }
             
             if (row < 0 || row >= Size || col < 0 || col >= Size)
                 return false;
@@ -72,6 +79,7 @@ namespace Ass1
 
             LastRow = row;
             LastCol = col;
+            NextNum += 1;
 
             return true;
         }
