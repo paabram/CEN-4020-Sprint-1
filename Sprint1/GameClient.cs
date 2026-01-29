@@ -34,6 +34,14 @@ namespace Ass1
             {
                 DrawBoard();
                 Console.WriteLine("Points: " + _engine.Points);
+
+                // check win condition
+                if (_engine.NextNum > GameEngine.Size * GameEngine.Size)
+                {
+                    Console.WriteLine("All squares filled! You win!");
+                    return;
+                }
+
                 Console.WriteLine("Menu: (P)lace  (S)ave  (L)oad  (Q)uit");
                 Console.Write("Choice: ");
                 string choice = Console.ReadLine();

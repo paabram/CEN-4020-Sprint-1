@@ -43,13 +43,6 @@ namespace Ass1
         public bool Place(int value, int row, int col, out int earned)
         {
             earned = 0;
-
-            // check win condition
-            if (NextNum > Size * Size)
-            {
-                Console.WriteLine("All squares filled! You win!");
-                return false;
-            }
             
             if (row < 0 || row >= Size || col < 0 || col >= Size)
                 return false;
@@ -102,6 +95,7 @@ namespace Ass1
             st.Points = Points;
             st.LastRow = LastRow;
             st.LastCol = LastCol;
+            st.NextNum = NextNum;
             return st;
         }
 
@@ -114,6 +108,7 @@ namespace Ass1
             Points = state.Points;
             LastRow = state.LastRow;
             LastCol = state.LastCol;
+            NextNum = state.NextNum;
         }
     }
 
