@@ -36,10 +36,20 @@ namespace Ass1
                 Console.WriteLine("Points: " + _engine.Points);
 
                 // check win condition
-                if (_engine.NextNum > GameEngine.Size * GameEngine.Size)
+                if (_engine.NextNum > _engine.Size * _engine.Size)
                 {
                     Console.WriteLine("All squares filled! You win!");
-                    return;
+                    if (!_engine.Level2)
+                    {
+                        Console.Write("Continue to level 2 (y/n)? ");
+                        string resp = Console.ReadLine();
+                        if (resp != null && resp.Trim().ToLowerInvariant() == "y") {
+                            _engine.LoadState(GameEngine.InitLevel2FromState(_engine.SaveState()));
+                            DrawBoard();
+                        }
+                    }
+                    else
+                        return;
                 }
 
                 Console.WriteLine("Menu: (P)lace  (S)ave  (L)oad  (Q)uit");
@@ -159,14 +169,23 @@ namespace Ass1
         private void DrawBoard()
         {
             Console.WriteLine();
-            Console.WriteLine("Board (5x5): '.' means empty");
-            Console.WriteLine("    0  1  2  3  4");
-            Console.WriteLine("  +----------------");
+            Console.WriteLine("Board: '.' means empty");
+            // dynamic header
+            Console.Write("   ");
+            for (int i = 0; i < _engine.Size; i++)
+                Console.Write("  " + i);
+            Console.WriteLine();
+            Console.Write("  +");
+            for (int i = 0; i < _engine.Size; i++)
+                Console.Write("---");
+            Console.WriteLine();
+            // Console.WriteLine("    0  1  2  3  4");
+            // Console.WriteLine("  +----------------");
 
-            for (int r = 0; r < GameEngine.Size; r++)
+            for (int r = 0; r < _engine.Size; r++)
             {
                 Console.Write(r + " | ");
-                for (int c = 0; c < GameEngine.Size; c++)
+                for (int c = 0; c < _engine.Size; c++)
                 {
                     int? cell = _engine.GetCell(r, c);
                     string s = (cell.HasValue ? cell.Value.ToString() : ".");

@@ -9,6 +9,7 @@ namespace Ass1
         // line1: points
         // line2: lastRow,lastCol
         // line3: nextNum
+        // line4: board size
         // next 5 lines: board rows with "." for empty
         public void Save(string file, GameState state)
         {
@@ -20,14 +21,15 @@ namespace Ass1
                 w.WriteLine(state.Points);
                 w.WriteLine(state.LastRow + "," + state.LastCol);
                 w.WriteLine(state.NextNum);
+                w.WriteLine(state.Size);
 
-                for (int r = 0; r < GameEngine.Size; r++)
+                for (int r = 0; r < state.Size; r++)
                 {
-                    for (int c = 0; c < GameEngine.Size; c++)
+                    for (int c = 0; c < state.Size; c++)
                     {
                         string cell = state.Board[r, c].HasValue ? state.Board[r, c].Value.ToString() : ".";
                         w.Write(cell);
-                        if (c < GameEngine.Size - 1) w.Write(" ");
+                        if (c < state.Size - 1) w.Write(" ");
                     }
                     w.WriteLine();
                 }
@@ -37,8 +39,8 @@ namespace Ass1
         public GameState Load(string file)
         {
             string[] lines = File.ReadAllLines(file);
-            if (lines.Length < 2 + GameEngine.Size)
-                throw new Exception("Save file is too short.");
+            // if (lines.Length < 2 + GameEngine.Size)
+            //     throw new Exception("Save file is too short.");
 
             int points = int.Parse(lines[0].Trim());
 
@@ -48,16 +50,17 @@ namespace Ass1
             int lastCol = int.Parse(last[1]);
 
             int nextNum = int.Parse(lines[2].Trim());
+            int size = int.Parse(lines[3].Trim());
 
-            int?[,] board = new int?[GameEngine.Size, GameEngine.Size];
+            int?[,] board = new int?[size, size];
 
-            for (int r = 0; r < GameEngine.Size; r++)
+            for (int r = 0; r < size; r++)
             {
-                string[] parts = lines[r + 3].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length != GameEngine.Size)
+                string[] parts = lines[r + 4].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length != size)
                     throw new Exception("Invalid board row at r=" + r);
 
-                for (int c = 0; c < GameEngine.Size; c++)
+                for (int c = 0; c < size; c++)
                 {
                     board[r, c] = (parts[c] == ".") ? (int?)null : int.Parse(parts[c]);
                 }
@@ -68,6 +71,7 @@ namespace Ass1
             st.LastRow = lastRow;
             st.LastCol = lastCol;
             st.NextNum = nextNum;
+            st.Size = size;
             st.Board = board;
             return st;
         }

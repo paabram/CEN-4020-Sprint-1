@@ -4,17 +4,19 @@ namespace Ass1
 {
     public class GameState
     {
+        public int Size;
         public int?[,] Board;
         public int Points;
         public int LastRow;
         public int LastCol;
         public int NextNum;
+        public bool Level2;
     }
     public class GameEngine
     {
-        public const int Size = 5;
+        public int Size;
 
-        private int?[,] _board = new int?[Size, Size];
+        private int?[,] _board;
 
         public int Points { get; private set; }
 
@@ -24,12 +26,18 @@ namespace Ass1
 
         public int NextNum {get; private set;}
 
+        public bool Level2 { get; set; }
+
         public GameEngine()
         {
+            // set board size before using it
+            Size = 5;
+            _board = new int?[Size, Size];
             Points = 0;
             LastRow = -1;
             LastCol = -1;
             NextNum = 2;
+            Level2 = false;
 
             // Place 1 at a random square on game start
             Random rand = new Random();
@@ -91,6 +99,7 @@ namespace Ass1
                     copy[r, c] = _board[r, c];
 
             GameState st = new GameState();
+            st.Size = Size;
             st.Board = copy;
             st.Points = Points;
             st.LastRow = LastRow;
@@ -104,11 +113,26 @@ namespace Ass1
             if (state == null || state.Board == null)
                 throw new ArgumentException("Invalid game state.");
 
+            Size = state.Size;
             _board = state.Board;
             Points = state.Points;
             LastRow = state.LastRow;
             LastCol = state.LastCol;
             NextNum = state.NextNum;
+        }
+
+        public static GameState InitLevel2FromState(GameState state)
+        {
+            GameState L2State = state;
+            L2State.Size = 7;
+            int?[,] newBoard = new int?[L2State.Size, L2State.Size];
+            for (int r = 1; r < L2State.Size - 1; r++)
+                for (int c = 1; c < L2State.Size - 1; c++)
+                    newBoard[r, c] = L2State.Board[r - 1, c - 1];
+            L2State.Board = newBoard;
+            L2State.NextNum = 2;
+            L2State.Level2 = true;
+            return L2State;
         }
     }
 
