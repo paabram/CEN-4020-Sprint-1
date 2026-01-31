@@ -42,7 +42,7 @@ namespace Ass1
                     return;
                 }
 
-                Console.WriteLine("Menu: (P)lace  (S)ave  (L)oad  (Q)uit");
+                Console.WriteLine("Menu: (P)lace  (S)ave  (L)oad  (Q)uit (C)lear");
                 Console.Write("Choice: ");
                 string choice = Console.ReadLine();
 
@@ -64,6 +64,10 @@ namespace Ass1
                     bool ok = Place();
                     if (!ok) return; // invalid move ends game
                 }
+				else if (choice == "C")
+				{
+					Clear();	
+				}
             }
         }
 
@@ -178,5 +182,10 @@ namespace Ass1
             }
             Console.WriteLine();
         }
+
+		private void Clear() 
+		{
+			_engine.ClearBoard();
+		}
     }
 }

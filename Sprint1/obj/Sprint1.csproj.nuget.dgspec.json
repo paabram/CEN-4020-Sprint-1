@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ramir\\Source\\Repos\\CEN-4020-Sprint-1\\Sprint1\\Sprint1.csproj": {}
+    "C:\\Users\\ramir\\Documents\\CEN-4020-Sprint-1\\Sprint1\\Sprint1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ramir\\Source\\Repos\\CEN-4020-Sprint-1\\Sprint1\\Sprint1.csproj": {
+    "C:\\Users\\ramir\\Documents\\CEN-4020-Sprint-1\\Sprint1\\Sprint1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ramir\\Source\\Repos\\CEN-4020-Sprint-1\\Sprint1\\Sprint1.csproj",
+        "projectUniqueName": "C:\\Users\\ramir\\Documents\\CEN-4020-Sprint-1\\Sprint1\\Sprint1.csproj",
         "projectName": "Sprint1",
-        "projectPath": "C:\\Users\\ramir\\Source\\Repos\\CEN-4020-Sprint-1\\Sprint1\\Sprint1.csproj",
+        "projectPath": "C:\\Users\\ramir\\Documents\\CEN-4020-Sprint-1\\Sprint1\\Sprint1.csproj",
         "packagesPath": "C:\\Users\\ramir\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ramir\\Source\\Repos\\CEN-4020-Sprint-1\\Sprint1\\obj\\",
+        "outputPath": "C:\\Users\\ramir\\Documents\\CEN-4020-Sprint-1\\Sprint1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ramir\\AppData\\Roaming\\NuGet\\NuGet.Config"

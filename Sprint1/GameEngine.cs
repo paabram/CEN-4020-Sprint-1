@@ -110,6 +110,23 @@ namespace Ass1
             LastCol = state.LastCol;
             NextNum = state.NextNum;
         }
+
+		public void ClearBoard()
+		{
+			for (int r = 0; r < Size; r++)
+				for (int c = 0; c < Size; c++)
+				{
+					if (_board[r, c] == 1)
+					{
+						LastRow = r;
+						LastCol = c;
+						continue;
+					}
+					_board[r, c] = null;
+				}
+			NextNum = 2;
+			Points = 0;
+		}
     }
 
     
