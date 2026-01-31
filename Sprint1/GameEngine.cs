@@ -113,6 +113,8 @@ namespace Ass1
 
 		public void ClearBoard()
 		{
+			//nulling every element in _board except 1
+			//keep 1 at same place
 			for (int r = 0; r < Size; r++)
 				for (int c = 0; c < Size; c++)
 				{
