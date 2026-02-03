@@ -42,7 +42,7 @@ namespace Ass1
                     return;
                 }
 
-                Console.WriteLine("Menu: (P)lace  (S)ave  (L)oad  (Q)uit (C)lear");
+                Console.WriteLine("Menu: (P)lace  (U)ndo  (S)ave  (L)oad  (C)lear  (Q)uit");
                 Console.Write("Choice: ");
                 string choice = Console.ReadLine();
 
