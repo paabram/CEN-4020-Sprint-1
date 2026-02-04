@@ -1,4 +1,4 @@
-﻿namespace UserDisplay
+﻿namespace GameUI
 {
     partial class Form_GameBoard
     {
@@ -54,9 +54,9 @@
             this.button_5_3 = new System.Windows.Forms.Button();
             this.button_5_4 = new System.Windows.Forms.Button();
             this.button_5_5 = new System.Windows.Forms.Button();
-            this.label_Points = new System.Windows.Forms.Label();
-            this.label_CurrentPoints = new System.Windows.Forms.Label();
-            this.label_Number = new System.Windows.Forms.Label();
+            this.label_pointsText = new System.Windows.Forms.Label();
+            this.label_currentPoints = new System.Windows.Forms.Label();
+            this.label_currNumberText = new System.Windows.Forms.Label();
             this.label_CurrentNumber = new System.Windows.Forms.Label();
             this.button_Undo = new System.Windows.Forms.Button();
             this.button_Save = new System.Windows.Forms.Button();
@@ -349,37 +349,37 @@
             this.button_5_5.UseVisualStyleBackColor = true;
             this.button_5_5.Click += new System.EventHandler(this.button_5_5_Click);
             // 
-            // label_Points
+            // label_pointsText
             // 
-            this.label_Points.AutoSize = true;
-            this.label_Points.Font = new System.Drawing.Font("Calibri", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_Points.Location = new System.Drawing.Point(320, 26);
-            this.label_Points.Name = "label_Points";
-            this.label_Points.Size = new System.Drawing.Size(92, 33);
-            this.label_Points.TabIndex = 26;
-            this.label_Points.Text = "Points:";
+            this.label_pointsText.AutoSize = true;
+            this.label_pointsText.Font = new System.Drawing.Font("Calibri", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_pointsText.Location = new System.Drawing.Point(320, 26);
+            this.label_pointsText.Name = "label_pointsText";
+            this.label_pointsText.Size = new System.Drawing.Size(92, 33);
+            this.label_pointsText.TabIndex = 26;
+            this.label_pointsText.Text = "Points:";
             // 
-            // label_CurrentPoints
+            // label_currentPoints
             // 
-            this.label_CurrentPoints.AutoSize = true;
-            this.label_CurrentPoints.BackColor = System.Drawing.Color.Transparent;
-            this.label_CurrentPoints.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label_CurrentPoints.Font = new System.Drawing.Font("Calibri", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_CurrentPoints.Location = new System.Drawing.Point(406, 27);
-            this.label_CurrentPoints.Name = "label_CurrentPoints";
-            this.label_CurrentPoints.Size = new System.Drawing.Size(29, 33);
-            this.label_CurrentPoints.TabIndex = 27;
-            this.label_CurrentPoints.Text = "0";
+            this.label_currentPoints.AutoSize = true;
+            this.label_currentPoints.BackColor = System.Drawing.Color.Transparent;
+            this.label_currentPoints.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label_currentPoints.Font = new System.Drawing.Font("Calibri", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_currentPoints.Location = new System.Drawing.Point(406, 27);
+            this.label_currentPoints.Name = "label_currentPoints";
+            this.label_currentPoints.Size = new System.Drawing.Size(29, 33);
+            this.label_currentPoints.TabIndex = 27;
+            this.label_currentPoints.Text = "0";
             // 
-            // label_Number
+            // label_currNumberText
             // 
-            this.label_Number.AutoSize = true;
-            this.label_Number.Font = new System.Drawing.Font("Calibri", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_Number.Location = new System.Drawing.Point(267, 374);
-            this.label_Number.Name = "label_Number";
-            this.label_Number.Size = new System.Drawing.Size(205, 33);
-            this.label_Number.TabIndex = 28;
-            this.label_Number.Text = "Current Number:";
+            this.label_currNumberText.AutoSize = true;
+            this.label_currNumberText.Font = new System.Drawing.Font("Calibri", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_currNumberText.Location = new System.Drawing.Point(267, 374);
+            this.label_currNumberText.Name = "label_currNumberText";
+            this.label_currNumberText.Size = new System.Drawing.Size(205, 33);
+            this.label_currNumberText.TabIndex = 28;
+            this.label_currNumberText.Text = "Current Number:";
             // 
             // label_CurrentNumber
             // 
@@ -432,9 +432,9 @@
             this.Controls.Add(this.button_Save);
             this.Controls.Add(this.button_Undo);
             this.Controls.Add(this.label_CurrentNumber);
-            this.Controls.Add(this.label_Number);
-            this.Controls.Add(this.label_CurrentPoints);
-            this.Controls.Add(this.label_Points);
+            this.Controls.Add(this.label_currNumberText);
+            this.Controls.Add(this.label_currentPoints);
+            this.Controls.Add(this.label_pointsText);
             this.Controls.Add(this.button_5_5);
             this.Controls.Add(this.button_5_4);
             this.Controls.Add(this.button_5_3);
@@ -497,9 +497,9 @@
         private System.Windows.Forms.Button button_5_3;
         private System.Windows.Forms.Button button_5_4;
         private System.Windows.Forms.Button button_5_5;
-        private System.Windows.Forms.Label label_Points;
-        private System.Windows.Forms.Label label_CurrentPoints;
-        private System.Windows.Forms.Label label_Number;
+        private System.Windows.Forms.Label label_pointsText;
+        private System.Windows.Forms.Label label_currentPoints;
+        private System.Windows.Forms.Label label_currNumberText;
         private System.Windows.Forms.Label label_CurrentNumber;
         private System.Windows.Forms.Button button_Undo;
         private System.Windows.Forms.Button button_Save;

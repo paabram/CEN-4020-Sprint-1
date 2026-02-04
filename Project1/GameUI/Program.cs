@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace UserDisplay
+namespace GameUI
 {
     internal static class Program
     {
@@ -16,11 +13,16 @@ namespace UserDisplay
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Form_GameBoard GameBoard = new Form_GameBoard();
+
+
+            GameEngine engine = new GameEngine(5);
+            GameSaver saver = new GameSaver(5);
+            Form_GameBoard GameBoard = new Form_GameBoard(engine, saver);
+            Form_GameMenu GameMenu = new Form_GameMenu(engine, saver);
+
             GameBoard.Hide();
-            Form_GameMenu GameMenu = new Form_GameMenu(GameBoard);
-            GameBoard.SetGameMenu(GameMenu);
             Application.Run(GameMenu);
+            
         }
     }
 }

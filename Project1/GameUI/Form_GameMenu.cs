@@ -1,27 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace UserDisplay
+namespace GameUI
 {
     public partial class Form_GameMenu : Form
     {
         Form_GameBoard gameBoard;
+        GameEngine gameEngine;
+        GameSaver gameSaver;
+
+
         public Form_GameMenu()
         {
             InitializeComponent();
         }
 
-        public Form_GameMenu(Form_GameBoard gameBoard)
+        public Form_GameMenu(GameEngine targetEngine, GameSaver targetSaver)
         {
             InitializeComponent();
-            this.gameBoard = gameBoard;
+            this.gameEngine = targetEngine;
+            this.gameSaver = targetSaver;
         }
 
         private void button_NewGame_Click(object sender, EventArgs e)

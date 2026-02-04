@@ -1,4 +1,4 @@
-﻿namespace UserDisplay
+﻿namespace GameUI
 {
     partial class Form_GameMenu
     {
