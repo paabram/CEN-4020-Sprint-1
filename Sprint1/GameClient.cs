@@ -52,7 +52,11 @@ namespace Ass1
                         return;
                 }
 
+<<<<<<< HEAD
+                Console.WriteLine("Menu: (P)lace (U)ndo  (C)lear  (S)ave  (L)oad  (Q)uit");
+=======
                 Console.WriteLine("Menu: (P)lace (U)ndo  (S)ave  (L)oad  (Q)uit");
+>>>>>>> main
                 Console.Write("Choice: ");
                 string choice = Console.ReadLine();
 
@@ -72,11 +76,22 @@ namespace Ass1
                 else if (choice == "P")
                 {
                     Place(); 
+<<<<<<< HEAD
+=======
+                }
+                else if (choice == "U")
+                {
+                    Undo();
+>>>>>>> main
                 }
                 else if (choice == "U")
                 {
                     Undo();
                 }
+				else if (choice == "C")
+				{
+					Clear();
+				}
             }
         }
 
@@ -176,6 +191,11 @@ namespace Ass1
                 Console.WriteLine("Load failed: " + ex.Message);
             }
         }
+
+		private void Clear() 
+		{
+			_engine.ClearBoard();
+		}
 
         private void DrawBoard()
         {
