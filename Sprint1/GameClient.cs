@@ -36,13 +36,23 @@ namespace Ass1
                 Console.WriteLine("Points: " + _engine.Points);
 
                 // check win condition
-                if (_engine.NextNum > GameEngine.Size * GameEngine.Size)
+                if (_engine.NextNum > _engine.Size * _engine.Size)
                 {
                     Console.WriteLine("All squares filled! You win!");
-                    return;
+                    if (!_engine.Level2)
+                    {
+                        Console.Write("Continue to level 2 (y/n)? ");
+                        string resp = Console.ReadLine();
+                        if (resp != null && resp.Trim().ToLowerInvariant() == "y") {
+                            _engine.LoadState(GameEngine.InitLevel2FromState(_engine.SaveState()));
+                            DrawBoard();
+                        }
+                    }
+                    else
+                        return;
                 }
 
-                Console.WriteLine("Menu: (P)lace  (U)ndo  (S)ave  (L)oad  (C)lear  (Q)uit");
+                Console.WriteLine("Menu: (P)lace (U)ndo  (C)lear  (S)ave  (L)oad  (Q)uit");
                 Console.Write("Choice: ");
                 string choice = Console.ReadLine();
 
@@ -61,62 +71,73 @@ namespace Ass1
                 }
                 else if (choice == "P")
                 {
-                    bool ok = Place();
-                    if (!ok) return; // invalid move ends game
+                    Place(); 
+                }
+                else if (choice == "U")
+                {
+                    Undo();
                 }
 				else if (choice == "C")
 				{
-					Clear();	
+					Clear();
 				}
             }
         }
 
         private bool Place()
         {
-            int val, r, c;
-            val = _engine.NextNum;
-
-            // Console.Write("Number: ");
-            // if (!int.TryParse(Console.ReadLine(), out val))
-            // {
-            //     Console.WriteLine("Invalid input. Game over.");
-            //     return false;
-            // }
+           int r, c;
+            int val = _engine.NextNum;
 
             Console.Write("Row (0-4): ");
             if (!int.TryParse(Console.ReadLine(), out r))
             {
-                Console.WriteLine("Invalid input. Game over.");
+                Console.WriteLine("Invalid row input. Try again.");
                 return false;
             }
 
             Console.Write("Col (0-4): ");
             if (!int.TryParse(Console.ReadLine(), out c))
             {
-                Console.WriteLine("Invalid input. Game over.");
+                Console.WriteLine("Invalid col input. Try again.");
                 return false;
             }
 
             int earned;
+            // If you added TryPlace + PlaceResult in the engine, prefer that:
+            // var res = _engine.TryPlace(val, r, c, out earned);
+            // if (res != PlaceResult.Success) { Console.WriteLine("Invalid move: " + res); return false; }
+
             bool placed = _engine.Place(val, r, c, out earned);
 
             if (!placed)
             {
-                Console.WriteLine("Invalid move. Game over.");
+                Console.WriteLine("Invalid move. Use Undo if needed, or try a different cell.");
                 return false;
             }
 
             if (earned == 1)
-            {
                 Console.WriteLine("Diagonal corner cell of predecessor! +1 point.");
-            }
 
-            // Points updated immediately in engine; display right away:
             Console.WriteLine("Points now: " + _engine.Points);
-
             return true;
         }
+        private void Undo()
+        {
+            if (!_engine.CanUndo)
+            {
+                Console.WriteLine("Nothing to undo.");
+                return;
+            }
 
+            MoveInformation undone;
+            if (_engine.UndoOne(out undone))
+            {
+                Console.WriteLine("Undid move: " + undone.Value + " at (" + undone.Row + "," + undone.Col + ")");
+                Console.WriteLine("Points now: " + _engine.Points);
+                Console.WriteLine("Next number now: " + _engine.NextNum);
+            }
+        }
         private void Save()
         {
             Console.Write("Filename to save: ");
@@ -160,20 +181,34 @@ namespace Ass1
             }
         }
 
+		private void Clear() 
+		{
+			_engine.ClearBoard();
+		}
+
         private void DrawBoard()
         {
             Console.WriteLine();
-            Console.WriteLine("Board (5x5): '.' means empty");
-            Console.WriteLine("    0  1  2  3  4");
-            Console.WriteLine("  +----------------");
+            Console.WriteLine("Board: '.' means empty");
+            // dynamic header
+            Console.Write("   ");
+            for (int i = 0; i < _engine.Size; i++)
+                Console.Write("  " + i);
+            Console.WriteLine();
+            Console.Write("  +");
+            for (int i = 0; i < _engine.Size; i++)
+                Console.Write("---");
+            Console.WriteLine();
+            // Console.WriteLine("    0  1  2  3  4");
+            // Console.WriteLine("  +----------------");
 
-            for (int r = 0; r < GameEngine.Size; r++)
+            for (int r = 0; r < _engine.Size; r++)
             {
                 Console.Write(r + " | ");
-                for (int c = 0; c < GameEngine.Size; c++)
+                for (int c = 0; c < _engine.Size; c++)
                 {
                     int? cell = _engine.GetCell(r, c);
-                    string s = (cell.HasValue ? cell.Value.ToString() : ".");
+                    string s = cell.HasValue ? cell.Value.ToString() : ".";
                     // small spacing
                     if (s.Length == 1) s = " " + s;
                     Console.Write(s + " ");
@@ -182,10 +217,5 @@ namespace Ass1
             }
             Console.WriteLine();
         }
-
-		private void Clear() 
-		{
-			_engine.ClearBoard();
-		}
     }
 }

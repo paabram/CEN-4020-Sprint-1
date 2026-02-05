@@ -20,12 +20,14 @@
       "outputPath": "C:\\Users\\ramir\\Documents\\CEN-4020-Sprint-1\\Sprint1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ramir\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\ramir\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
