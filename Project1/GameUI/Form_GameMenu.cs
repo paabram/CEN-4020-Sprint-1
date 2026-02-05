@@ -9,6 +9,10 @@ namespace GameUI
         GameEngine gameEngine;
         GameSaver gameSaver;
 
+        public void SetGameBoard(Form_GameBoard GameBoard)
+        {
+            this.gameBoard = GameBoard;
+        }
 
         public Form_GameMenu()
         {
@@ -26,16 +30,42 @@ namespace GameUI
         {
             this.Hide();
             gameBoard.Show();
+            gameBoard.refreshDisplay();
         }
 
         private void button_LoadGame_Click(object sender, EventArgs e)
         {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
 
+            string filePath = AppDomain.CurrentDomain.BaseDirectory + "Saves\\";
+            openFileDialog.InitialDirectory = filePath;
+            openFileDialog.Title = "Select Save File";
+            openFileDialog.CheckFileExists = true;
+            openFileDialog.CheckPathExists = true;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                gameEngine.SetState(gameSaver.Load(openFileDialog.FileName));
+                this.Hide();
+                gameBoard.Show();
+                gameBoard.refreshDisplay();
+            } 
         }
 
         private void button_Exit_Click(object sender, EventArgs e)
         {
 
+        }
+
+        public void changeContinueVisibility(bool visible)
+        {
+            button_Continue.Visible = visible;
+        }
+
+        private void button_Continue_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            gameBoard.Show();
         }
     }
 }

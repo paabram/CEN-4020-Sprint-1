@@ -31,6 +31,7 @@
             this.button_NewGame = new System.Windows.Forms.Button();
             this.button_LoadGame = new System.Windows.Forms.Button();
             this.button_Exit = new System.Windows.Forms.Button();
+            this.button_Continue = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_NewGame
@@ -63,11 +64,23 @@
             this.button_Exit.UseVisualStyleBackColor = true;
             this.button_Exit.Click += new System.EventHandler(this.button_Exit_Click);
             // 
+            // button_Continue
+            // 
+            this.button_Continue.Location = new System.Drawing.Point(339, 81);
+            this.button_Continue.Name = "button_Continue";
+            this.button_Continue.Size = new System.Drawing.Size(80, 43);
+            this.button_Continue.TabIndex = 3;
+            this.button_Continue.Text = "Continue";
+            this.button_Continue.UseVisualStyleBackColor = true;
+            this.button_Continue.Visible = false;
+            this.button_Continue.Click += new System.EventHandler(this.button_Continue_Click);
+            // 
             // Form_GameMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button_Continue);
             this.Controls.Add(this.button_Exit);
             this.Controls.Add(this.button_LoadGame);
             this.Controls.Add(this.button_NewGame);
@@ -82,5 +95,6 @@
         private System.Windows.Forms.Button button_NewGame;
         private System.Windows.Forms.Button button_LoadGame;
         private System.Windows.Forms.Button button_Exit;
+        private System.Windows.Forms.Button button_Continue;
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace GameUI
 {
@@ -42,7 +43,7 @@ namespace GameUI
 
         public GameState(GameState otherState)
         {
-            this.Board = otherState.Board;
+            this.Board = (int?[,])otherState.Board.Clone();
             this.Points = otherState.Points;
             this.LastRow = otherState.LastRow;
             this.LastCol = otherState.LastCol;
@@ -54,12 +55,16 @@ namespace GameUI
 
     public class GameEngine
     {
-        private int _size = 5;
+        private int _size;
 
         public int getBoardSize() { return _size; }
         public void setBoardSize(int boardSize ) { _size = boardSize; }
 
         GameState gameState;
+
+        public Stack<GameState> history;
+        
+        
 
         public GameEngine()
         {
@@ -70,20 +75,27 @@ namespace GameUI
         {
             gameState = new GameState(boardSize);
             _size = boardSize;
+            history = new Stack<GameState>();
         }
 
         public bool Place(int value, int row, int col)
         {
 
-            
-            if (row < 0 || row >= _size || col < 0 || col >= _size)
-                return false;
+            bool occupied = gameState.Board[row, col].HasValue;
+            bool outOfBounds = (row < 0 || row >= _size || col < 0 || col >= _size);
+            bool isNotAdjacentRow = ((gameState.LastRow != -1 && gameState.LastRow > row + 1) || (gameState.LastRow != -1 && gameState.LastRow < row - 1));
+            bool isNotAdjacentCol = ((gameState.LastCol != -1 && gameState.LastCol > col + 1) || (gameState.LastCol != -1 && gameState.LastCol < col - 1));
 
-            // invalid if occupied
-            if (gameState.Board[row, col].HasValue)
+            if (occupied || outOfBounds || isNotAdjacentRow || isNotAdjacentCol)
+            {
                 return false;
+            }
+            GameState previousMove = new GameState(GetState());
+            history.Push(previousMove);
 
             gameState.Board[row, col] = value;
+
+            gameState.currentNumber++;
 
             // reward: diagonal corner cell of predecessor
             if (gameState.LastRow != -1 && gameState.LastCol != -1)
@@ -96,7 +108,6 @@ namespace GameUI
 
             gameState.LastRow = row;
             gameState.LastCol = col;
-
             return true;
         }
 

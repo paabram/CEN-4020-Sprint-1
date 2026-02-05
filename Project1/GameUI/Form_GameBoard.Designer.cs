@@ -412,6 +412,7 @@
             this.button_Save.TabIndex = 31;
             this.button_Save.Text = "Save";
             this.button_Save.UseVisualStyleBackColor = true;
+            this.button_Save.Click += new System.EventHandler(this.button_Save_Click);
             // 
             // button_Exit
             // 
@@ -422,6 +423,7 @@
             this.button_Exit.TabIndex = 32;
             this.button_Exit.Text = "Exit";
             this.button_Exit.UseVisualStyleBackColor = true;
+            this.button_Exit.Click += new System.EventHandler(this.button_Exit_Click);
             // 
             // Form_GameBoard
             // 

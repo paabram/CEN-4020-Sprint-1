@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 
 namespace GameUI
 {
@@ -12,6 +13,35 @@ namespace GameUI
         public GameSaver(int boardSize)
         {
             this.boardSize = boardSize;
+        }
+
+        public int getLatestFileNumber()
+        {
+            string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string targetDirectory = currentDirectory + "Saves";
+            int maxNumber = 0;
+            if (Directory.Exists(targetDirectory))
+            {
+                var files = Directory.GetFiles(targetDirectory);
+                foreach (string file in files)
+                {
+                    string filename = Path.GetFileNameWithoutExtension(file);
+
+                    string digits = Regex.Match(filename, @"\d+").Value;
+
+                    if (int.TryParse(digits, out int testNumber))
+                    {
+                        if(testNumber > maxNumber)
+                        {
+                            maxNumber = testNumber;
+                        }
+                    }
+                }
+                return maxNumber;
+            } else
+            {
+                return maxNumber;
+            }
         }
 
         // Save format:

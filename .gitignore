@@ -33,9 +33,6 @@ Project1/UserDisplay/obj/Debug/.NETFramework,Version=v4.8.AssemblyAttributes.cs
 .vs/CEN-4020-Sprint-1/v17/DocumentLayout.backup.json
 .vs/CEN-4020-Sprint-1/v17/.wsuo
 .vs/CEN-4020-Sprint-1/FileContentIndex/b697dfcc-1eb2-4ecf-9840-d17bfdf605b1.vsidx
-.vs/ProjectSettings.json
-.vs/slnx.sqlite
-.vs/VSWorkspaceState.json
 Project1/.vs/Project1/CopilotIndices/17.14.1577.30250/CodeChunks.db
 Project1/.vs/Project1/CopilotIndices/17.14.1577.30250/SemanticSymbols.db
 Project1/.vs/Project1/FileContentIndex/00a2b639-35a4-4098-bbc5-7e4f85693d7f.vsidx
@@ -48,15 +45,9 @@ Project1/.vs/Project1/v17/ResourceExplorer/settings.json
 Project1/GameUI/.vs/GameUI/FileContentIndex/d81d4a1c-2f31-41f5-820f-1b4d2924a23d.vsidx
 Project1/GameUI/.vs/GameUI/v17/.suo
 Project1/GameUI/.vs/UserDisplay.csproj.dtbcache.json
-Project1/GameUI/App.config
 Project1/GameUI/bin/Debug/UserDisplay.exe
 Project1/GameUI/bin/Debug/UserDisplay.exe.config
 Project1/GameUI/bin/Debug/UserDisplay.pdb
-Project1/GameUI/Properties/Settings.settings
-Project1/GameUI/Properties/Settings.Designer.cs
-Project1/GameUI/Properties/Resources.resx
-Project1/GameUI/Properties/Resources.Designer.cs
-Project1/GameUI/Properties/AssemblyInfo.cs
 Project1/GameUI/obj/Debug/UserDisplay.Properties.Resources.resources
 Project1/GameUI/obj/Debug/UserDisplay.pdb
 Project1/GameUI/obj/Debug/UserDisplay.exe.config
@@ -74,3 +65,5 @@ Project1/GameUI/obj/Debug/.NETFramework,Version=v4.8.AssemblyAttributes.cs
 Project1/GameUI/obj/Release/UserDisplay.csproj.AssemblyReference.cache
 Project1/GameUI/obj/Release/GameUI.csproj.AssemblyReference.cache
 Project1/GameUI/obj/Release/.NETFramework,Version=v4.8.AssemblyAttributes.cs
+/Project1/.vs
+/Project1/GameUI/bin
