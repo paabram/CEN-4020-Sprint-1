@@ -176,6 +176,7 @@ namespace Ass1
                 for (int i = state.recordedMoves.Length - 1; i >= 0; i--)
                     _history.Push(state.recordedMoves[i]);
             }
+<<<<<<< HEAD
         }
 
         public static GameState InitLevel2FromState(GameState state)
@@ -210,6 +211,23 @@ namespace Ass1
 			NextNum = 2;
 			Points = 0;
 		}
+=======
+        }
+
+        public static GameState InitLevel2FromState(GameState state)
+        {
+            GameState L2State = state;
+            L2State.Size = 7;
+            int?[,] newBoard = new int?[L2State.Size, L2State.Size];
+            for (int r = 1; r < L2State.Size - 1; r++)
+                for (int c = 1; c < L2State.Size - 1; c++)
+                    newBoard[r, c] = L2State.Board[r - 1, c - 1];
+            L2State.Board = newBoard;
+            L2State.NextNum = 2;
+            L2State.Level2 = true;
+            return L2State;
+        }
+>>>>>>> main
     }
 }
 
