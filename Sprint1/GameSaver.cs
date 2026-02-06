@@ -10,6 +10,7 @@ namespace Ass1
         // line2: lastRow,lastCol
         // line3: nextNum
         // line4: board size
+        // line5: Level2 status (true/false)
         // next 5 lines: board rows with "." for empty
         public void Save(string file, GameState state)
         {
@@ -22,6 +23,7 @@ namespace Ass1
                 w.WriteLine(state.LastRow + "," + state.LastCol);
                 w.WriteLine(state.NextNum);
                 w.WriteLine(state.Size);
+                w.WriteLine(state.Level2);
 
                 for (int r = 0; r < state.Size; r++)
                 {
@@ -60,7 +62,7 @@ namespace Ass1
         public GameState Load(string file)
         {
             string[] lines = File.ReadAllLines(file);
-            if (lines.Length < 3 + GameEngine.Size)
+            if (lines.Length < 8) // minimum lines for size 5 board without history
                 throw new Exception("Save file is too short.");
 
             int points = int.Parse(lines[0].Trim());
@@ -72,12 +74,13 @@ namespace Ass1
 
             int nextNum = int.Parse(lines[2].Trim());
             int size = int.Parse(lines[3].Trim());
+            bool level2 = bool.Parse(lines[4].Trim());
 
             int?[,] board = new int?[size, size];
 
             for (int r = 0; r < size; r++)
             {
-                string[] parts = lines[r + 4].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] parts = lines[r + 5].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length != size)
                     throw new Exception("Invalid board row at r=" + r);
 
@@ -86,7 +89,7 @@ namespace Ass1
                     board[r, c] = (parts[c] == ".") ? (int?)null : int.Parse(parts[c]);
                 }
             }
-            int historyLineIndex = 3 + GameEngine.Size; // after board
+            int historyLineIndex = 3 + size; // after board
             MoveInformation[] recordedMoves = new MoveInformation[0];
 
             if (lines.Length > historyLineIndex)

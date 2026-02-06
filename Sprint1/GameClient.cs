@@ -47,16 +47,14 @@ namespace Ass1
                             _engine.LoadState(GameEngine.InitLevel2FromState(_engine.SaveState()));
                             DrawBoard();
                         }
+                        else
+                            return;
                     }
                     else
                         return;
                 }
 
-<<<<<<< HEAD
                 Console.WriteLine("Menu: (P)lace (U)ndo  (C)lear  (S)ave  (L)oad  (Q)uit");
-=======
-                Console.WriteLine("Menu: (P)lace (U)ndo  (S)ave  (L)oad  (Q)uit");
->>>>>>> main
                 Console.Write("Choice: ");
                 string choice = Console.ReadLine();
 
@@ -76,13 +74,10 @@ namespace Ass1
                 else if (choice == "P")
                 {
                     Place(); 
-<<<<<<< HEAD
-=======
                 }
                 else if (choice == "U")
                 {
                     Undo();
->>>>>>> main
                 }
                 else if (choice == "U")
                 {
@@ -100,14 +95,14 @@ namespace Ass1
            int r, c;
             int val = _engine.NextNum;
 
-            Console.Write("Row (0-4): ");
+            Console.Write("Row: ");
             if (!int.TryParse(Console.ReadLine(), out r))
             {
                 Console.WriteLine("Invalid row input. Try again.");
                 return false;
             }
 
-            Console.Write("Col (0-4): ");
+            Console.Write("Col: ");
             if (!int.TryParse(Console.ReadLine(), out c))
             {
                 Console.WriteLine("Invalid col input. Try again.");

@@ -29,13 +29,13 @@ namespace Ass1
         public int LastCol;
         public int NextNum;
         public bool Level2;
-        public MoveInformation[] recordedMoves;
+        public MoveInformation?[] recordedMoves;
     }
     public class GameEngine
     {
         public int Size;
 
-        private int?[,] _board = new int?[Size, Size];
+        private int?[,] _board;
         private Stack<MoveInformation> _history = new Stack<MoveInformation>();
         public int Points { get; private set; }
 
@@ -73,17 +73,36 @@ namespace Ass1
             
             if (row < 0 || row >= Size || col < 0 || col >= Size)
                 return CheckResult.OutOfBounds;
-
+            
             // invalid if occupied
             if (_board[row, col].HasValue)
                 return CheckResult.Occupied;
             
-            // invalid if not touching previous square
-            if (LastRow != -1 && LastCol != -1)
+            // invalid if not touching previous square for level 1
+            if (!Level2 && LastRow != -1 && LastCol != -1)
             {
                 if (Math.Abs(row - LastRow) > 1 || Math.Abs(col - LastCol) > 1)
                     return CheckResult.IncorrectPlacement;
             }
+            // check validity for level 2
+            else if (Level2)
+            {
+                var (L1_row, L1_col) = FindIndexInL1(value);
+                /* 
+                    valid if:
+                    - place row = L1 row
+                    - place col = L1 col
+                    - row = col and L1 row = L1 col
+                    - row + col = size - 1 and = row + L1 col = size - 1
+                */
+                if (!((row == L1_row) || 
+                      (col == L1_col) || 
+                      (row == col && L1_row == L1_col) || 
+                      (row + col == Size - 1 && L1_row + L1_col == Size - 1))
+                    )
+                    return CheckResult.IncorrectPlacement;
+            }
+
             _history.Push(new MoveInformation
             {
                 Row = row,
@@ -95,7 +114,7 @@ namespace Ass1
                 Num = NextNum
             });
 
-           _board[row, col] = value;
+            _board[row, col] = value;
             Points += earned;
             LastRow = row;
             LastCol = col;
@@ -154,6 +173,8 @@ namespace Ass1
             st.LastRow = LastRow;
             st.LastCol = LastCol;
             st.NextNum = NextNum;
+            Console.WriteLine(Level2);
+            st.Level2 = Level2;
             st.recordedMoves = _history.ToArray();
             return st;
         }
@@ -169,6 +190,8 @@ namespace Ass1
             LastRow = state.LastRow;
             LastCol = state.LastCol;
             NextNum = state.NextNum;
+            Level2 = state.Level2;
+            Console.WriteLine(Level2);
             _history = new Stack<MoveInformation>();
             if (state.recordedMoves != null)
             {
@@ -176,7 +199,6 @@ namespace Ass1
                 for (int i = state.recordedMoves.Length - 1; i >= 0; i--)
                     _history.Push(state.recordedMoves[i]);
             }
-<<<<<<< HEAD
         }
 
         public static GameState InitLevel2FromState(GameState state)
@@ -191,43 +213,56 @@ namespace Ass1
             L2State.NextNum = 2;
             L2State.Level2 = true;
             return L2State;
+        }
+
+        private (int, int) FindIndexInL1(int num)
+        // Find the row and column of a number in level 1 portion of board
+        {
+            // should ony be called in level 2 mode
+            if (!Level2)
+                throw new InvalidOperationException("Not in level 2 mode.");
+            
+            for (int r = 1; r < Size - 1; r++)
+                for (int c = 1; c < Size - 1; c++)
+                    if (_board[r, c] == num)
+                        return (r, c);
+
+            throw new ArgumentException("Number not found in level 1 portion.");
         }
 
 		public void ClearBoard()
 		{
 			//nulling every element in _board except 1
 			//keep 1 at same place
-			for (int r = 0; r < Size; r++)
-				for (int c = 0; c < Size; c++)
-				{
-					if (_board[r, c] == 1)
-					{
-						LastRow = r;
-						LastCol = c;
-						continue;
-					}
-					_board[r, c] = null;
-				}
+            // when on level 1, clear whole board
+            Console.WriteLine(Level2);
+            if (!Level2) {
+                for (int r = 0; r < Size; r++)
+                    for (int c = 0; c < Size; c++)
+                    {
+                        if (_board[r, c] == 1)
+                        {
+                            LastRow = r;
+                            LastCol = c;
+                            continue;
+                        }
+                        _board[r, c] = null;
+                    }
+            }
+            // for level 2, clear only level 2 border
+            else {
+                for (int r = 0; r < Size; r++)
+                    for (int c = 0; c < Size; c++)
+                    {
+                        if (r == 0 || r == Size - 1 || c == 0 || c == Size - 1)
+                        {
+                            _board[r, c] = null;
+                        }
+                    }
+            }
 			NextNum = 2;
 			Points = 0;
 		}
-=======
-        }
-
-        public static GameState InitLevel2FromState(GameState state)
-        {
-            GameState L2State = state;
-            L2State.Size = 7;
-            int?[,] newBoard = new int?[L2State.Size, L2State.Size];
-            for (int r = 1; r < L2State.Size - 1; r++)
-                for (int c = 1; c < L2State.Size - 1; c++)
-                    newBoard[r, c] = L2State.Board[r - 1, c - 1];
-            L2State.Board = newBoard;
-            L2State.NextNum = 2;
-            L2State.Level2 = true;
-            return L2State;
-        }
->>>>>>> main
     }
 }
 

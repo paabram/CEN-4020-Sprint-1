@@ -8,26 +8,24 @@
     "net10.0": []
   },
   "packageFolders": {
-    "C:\\Users\\ramir\\.nuget\\packages\\": {}
+    "C:\\Users\\patri\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ramir\\Documents\\CEN-4020-Sprint-1\\Sprint1\\Sprint1.csproj",
+      "projectUniqueName": "C:\\Users\\patri\\Desktop\\code\\CEN 4020\\CEN-4020-Sprint-1\\Sprint1\\Sprint1.csproj",
       "projectName": "Sprint1",
-      "projectPath": "C:\\Users\\ramir\\Documents\\CEN-4020-Sprint-1\\Sprint1\\Sprint1.csproj",
-      "packagesPath": "C:\\Users\\ramir\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ramir\\Documents\\CEN-4020-Sprint-1\\Sprint1\\obj\\",
+      "projectPath": "C:\\Users\\patri\\Desktop\\code\\CEN 4020\\CEN-4020-Sprint-1\\Sprint1\\Sprint1.csproj",
+      "packagesPath": "C:\\Users\\patri\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\patri\\Desktop\\code\\CEN 4020\\CEN-4020-Sprint-1\\Sprint1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ramir\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\patri\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
