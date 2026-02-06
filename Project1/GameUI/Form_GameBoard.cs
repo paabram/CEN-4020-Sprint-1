@@ -45,8 +45,10 @@ namespace GameUI
                     int row = i;
                     int col = j;
                     string btnName = $"button_{row + 1}_{col + 1}";
+                    string txtBoxName = $"textBox_{row + 1}_{col + 1}";
                     var btn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
-                    btn.Text = "";
+                    var txtBox = this.Controls.Find(txtBoxName, true).FirstOrDefault() as TextBox;
+                    txtBox.Text = "";
                     btn.BackColor = System.Drawing.SystemColors.Control;
                 }
             }
@@ -64,9 +66,11 @@ namespace GameUI
                 {
                     int row = i;
                     int col = j;
+                    string txtBoxName = $"textBox_{row + 1}_{col + 1}";
                     string btnName = $"button_{row + 1}_{col + 1}";
+                    var txtBox = this.Controls.Find(txtBoxName, true).FirstOrDefault() as TextBox;
                     var btn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
-                    btn.Text = currentState.Board[row,col].ToString();
+                    txtBox.Text = currentState.Board[row,col].ToString();
                     if (currentState.Board[row,col].ToString() == "")
                     {
                         btn.BackColor = System.Drawing.SystemColors.Control;
@@ -80,17 +84,22 @@ namespace GameUI
             label_currentPoints.Text = currentState.Points.ToString();
         }
 
-        private async void tryPlaceValue(int row, int col)
+        private async void tryPlaceValue(int row, int col, string value)
         {
-            if(gameEngine.Place(gameEngine.GetCurrentNumber(), row, col))
+            int intValue;
+            bool isNumber = int.TryParse(value, out intValue);
+            bool isCurrentNumber = intValue == gameEngine.GetCurrentNumber();
+            if (isNumber && isCurrentNumber && gameEngine.Place(intValue, row, col))
             {
                 //play victory noise
-                string btnName = $"button_{row+1}_{col+1}";
+                string txtBoxName = $"textBox_{row+1}_{col+1}";
+                string btnName = $"button_{row + 1}_{col + 1}";
                 int currentNumber = gameEngine.GetCurrentNumber();
                 if (currentNumber > gameEngine.getBoardSize() * gameEngine.getBoardSize())
                 {
+                    var finalTxtBox = this.Controls.Find(txtBoxName, true).FirstOrDefault() as TextBox;
                     var finalBtn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
-                    finalBtn.Text = $"{currentNumber-1}";
+                    finalTxtBox.Text = $"{currentNumber-1}";
                     finalBtn.BackColor = System.Drawing.Color.Green;
                     DialogResult dr = MessageBox.Show("Congratulations! You Won! Would you like to start a new game?", null, MessageBoxButtons.YesNo);
                     if(dr == DialogResult.Yes)
@@ -105,15 +114,17 @@ namespace GameUI
                         Application.Exit();
                     }
                 }
-                var btn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
-                btn.Text = $"{currentNumber}";
+                var txtBox = this.Controls.Find(txtBoxName, true).FirstOrDefault() as TextBox;
+                txtBox.Text = $"{currentNumber}";
                 refreshDisplay();
                 return;
             } else
             {
                 SystemSounds.Exclamation.Play();
                 string btnName = $"button_{row + 1}_{col + 1}";
+                string txtBoxName = $"textBox_{row + 1}_{col + 1}";
                 var btn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
+                var txtBox = this.Controls.Find(txtBoxName, true).FirstOrDefault() as TextBox;
                 var defaultColor = btn.BackColor;
 
                 btn.BackColor = System.Drawing.Color.Red;
@@ -121,6 +132,8 @@ namespace GameUI
                 await Task.Delay(500);
 
                 btn.BackColor = defaultColor;
+                txtBox.Text = "";
+                txtBox.Enabled = true;
 
                 return;
             }
@@ -155,131 +168,127 @@ namespace GameUI
 
         private void button_1_1_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(0, 0);
+
         }
 
         private void button_1_2_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(0, 1);
 
         }
 
         private void button_1_3_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(0, 2);
 
         }
 
         private void button_1_4_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(0, 3);
 
         }
 
         private void button_1_5_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(0, 4);
 
         }
 
         private void button_2_1_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(1, 0);
+
         }
 
         private void button_2_2_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(1, 1);
+
         }
 
         private void button_2_3_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(1, 2);
+
         }
 
         private void button_2_4_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(1, 3);
+
         }
 
         private void button_2_5_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(1, 4);
+
         }
 
         private void button_3_1_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(2, 0);
+
         }
         private void button_3_2_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(2, 1);
+
         }
 
 
         private void button_3_3_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(2, 2);
+
         }
         private void button_3_4_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(2, 3);
+
         }
 
         private void button_3_5_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(2, 4);
+
         }
 
 
         private void button_4_1_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(3, 0);
+ 
         }
 
         private void button_4_2_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(3, 1);
+
         }
 
         private void button_4_3_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(3, 2);
+ 
         }
 
         private void button_4_4_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(3, 3);
+
         }
 
         private void button_4_5_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(3, 4);
+
         }
 
         private void button_5_1_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(4, 0);
+
         }
 
         private void button_5_2_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(4, 1);
+
         }
 
         private void button_5_3_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(4, 2);
+
         }
 
         private void button_5_4_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(4, 3);
+
         }
 
         private void button_5_5_Click(object sender, EventArgs e)
         {
-            tryPlaceValue(4, 4);
+
         }
 
         private void button_Undo_Click(object sender, EventArgs e)
@@ -317,16 +326,303 @@ namespace GameUI
             {
                 string savepath = filepath + "/Saves/Save1.txt";
                 gameSaver.Save(savepath, gameEngine.GetState());
+                foreach (GameState state in gameEngine.history)
+                {
+                    gameSaver.Save(savepath, state);
+                }
             } else if(fileNumber > 25)
             {
                 fileNumber = 1;
                 string savepath = filepath + $"Saves\\Save{fileNumber + 1}.txt";
+                gameSaver.Save(savepath, gameEngine.GetState());
+                foreach (GameState state in gameEngine.history)
+                {
+                    gameSaver.Save(savepath, state);
+                }
             } else 
             {
                 string savepath = filepath + $"Saves/Save{fileNumber + 1}.txt";
                 gameSaver.Save(savepath, gameEngine.GetState());
+                foreach (GameState state in gameEngine.history)
+                {
+                    gameSaver.Save(savepath, state);
+                }
             }
         }
 
+        private void textBox_1_1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(0, 0, textBox_1_1.Text);
+                e.SuppressKeyPress = true;
+                textBox_1_1.Enabled = false;
+            }
+        }
+
+        private void textBox_1_2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(0, 1, textBox_1_2.Text);
+                e.SuppressKeyPress = true;
+                textBox_1_2.Enabled = false;
+            }
+        }
+
+        private void textBox_1_3_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(0, 2, textBox_1_3.Text);
+                e.SuppressKeyPress = true;
+                textBox_1_3.Enabled = false;
+            }
+        }
+
+        private void textBox_1_4_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(0, 3, textBox_1_4.Text);
+                e.SuppressKeyPress = true;
+                textBox_1_4.Enabled = false;
+            }
+        }
+
+        private void textBox_1_5_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(0, 4, textBox_1_5.Text);
+                e.SuppressKeyPress = true;
+                textBox_1_5.Enabled = false;
+            }
+        }
+
+        private void textBox_2_1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(1, 0, textBox_2_1.Text);
+                e.SuppressKeyPress = true;
+                textBox_2_1.Enabled = false;
+            }
+        }
+
+        private void textBox_2_2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(1, 1, textBox_2_2.Text);
+                e.SuppressKeyPress = true;
+                textBox_2_2.Enabled = false;
+            }
+        }
+
+        private void textBox_2_3_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(1, 2, textBox_2_3.Text);
+                e.SuppressKeyPress = true;
+                textBox_2_3.Enabled = false;
+            }
+        }
+
+        private void textBox_2_4_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(1, 3, textBox_2_4.Text);
+                e.SuppressKeyPress = true;
+                textBox_2_4.Enabled = false;
+            }
+        }
+
+        private void textBox_2_5_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(1, 4, textBox_2_5.Text);
+                e.SuppressKeyPress = true;
+                textBox_2_5.Enabled = false;
+            }
+        }
+
+        private void textBox_3_1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(2, 0, textBox_3_1.Text);
+                e.SuppressKeyPress = true;
+                textBox_3_1.Enabled = false;
+            }
+        }
+
+        private void textBox_3_2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(2, 1, textBox_3_2.Text);
+                e.SuppressKeyPress = true;
+                textBox_3_2.Enabled = false;
+            }
+        }
+
+        private void textBox_3_3_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(2, 2, textBox_3_3.Text);
+                e.SuppressKeyPress = true;
+                textBox_3_3.Enabled = false;
+            }
+        }
+
+        private void textBox_3_4_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(2, 3, textBox_3_4.Text);
+                e.SuppressKeyPress = true;
+                textBox_3_4.Enabled = false;
+            }
+        }
+
+        private void textBox_3_5_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(2, 4, textBox_3_5.Text);
+                e.SuppressKeyPress = true;
+                textBox_3_5.Enabled = false;
+            }
+        }
+
+        private void textBox_4_1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(3, 0, textBox_4_1.Text);
+                e.SuppressKeyPress = true;
+                textBox_1_1.Enabled = false;
+            }
+        }
+
+        private void textBox_4_2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(3, 1, textBox_4_2.Text);
+                e.SuppressKeyPress = true;
+                textBox_4_2.Enabled = false;
+            }
+        }
+
+        private void textBox_4_3_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(3, 2, textBox_4_3.Text);
+                e.SuppressKeyPress = true;
+                textBox_4_3.Enabled = false;
+            }
+        }
+
+        private void textBox_4_4_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(3, 3, textBox_4_4.Text);
+                e.SuppressKeyPress = true;
+                textBox_4_4.Enabled = false;
+            }
+        }
+
+        private void textBox_4_5_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(3, 4, textBox_4_5.Text);
+                e.SuppressKeyPress = true;
+                textBox_4_5.Enabled = false;
+            }
+        }
+
+        private void textBox_5_1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(4, 0, textBox_5_1.Text);
+                e.SuppressKeyPress = true;
+                textBox_5_1.Enabled = false;
+            }
+        }
+
+        private void textBox_5_2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(4, 1, textBox_5_2.Text);
+                e.SuppressKeyPress = true;
+                textBox_5_2.Enabled = false;
+            }
+        }
+
+        private void textBox_5_3_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(4, 2, textBox_5_3.Text);
+                e.SuppressKeyPress = true;
+                textBox_5_3.Enabled = false;
+            }
+        }
+
+        private void textBox_5_4_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(4, 3, textBox_5_4.Text);
+                e.SuppressKeyPress = true;
+                textBox_5_4.Enabled = false;
+            }
+        }
+
+        private void textBox_5_5_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                tryPlaceValue(4, 4, textBox_5_5.Text);
+                e.SuppressKeyPress = true;
+                textBox_5_5.Enabled = false;
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
@@ -53,7 +54,14 @@ namespace GameUI
             if (state == null || state.Board == null)
                 throw new ArgumentException("Invalid game state.");
 
-            using (StreamWriter w = new StreamWriter(file))
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            if (!Directory.Exists(baseDirectory + "\\Saves"))
+            {
+                Directory.CreateDirectory(baseDirectory + "\\Saves");
+            }
+
+            using (StreamWriter w = new StreamWriter(file, append: true))
             {
                 w.WriteLine(state.currentNumber);
                 w.WriteLine(state.currentLevel);
@@ -73,41 +81,52 @@ namespace GameUI
             }
         }
 
-        public GameState Load(string file)
+        public GameState[] Load(string file)
         {
-            int currNum;
-            int currLevel;
-            int points;
+            GameState[] results = { };
 
+       
+            
             string[] lines = File.ReadAllLines(file);
-            if (lines.Length < 2 + boardSize)
-                throw new Exception("Save file is too short.");
+            if (lines.Length < 2 + boardSize) throw new Exception("Save file is too short.");
 
-            currNum = int.Parse(lines[0].Trim());
-            currLevel = int.Parse(lines[1].Trim());
-            points = int.Parse(lines[2].Trim());
-
-            string[] last = lines[3].Trim().Split(',');
-            if (last.Length != 2) throw new Exception("Invalid last move line.");
-            int lastRow = int.Parse(last[0]);
-            int lastCol = int.Parse(last[1]);
-
-            int?[,] board = new int?[boardSize, boardSize];
-
-            for (int r = 0; r < boardSize; r++)
+            for(int i = 0; i < lines.Length; i++)
             {
-                string[] parts = lines[r + 4].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                if (parts.Length != boardSize)
-                    throw new Exception("Invalid board row at r=" + r);
+                int currNum = int.Parse(lines[i%9].Trim()); //i=10
+                i++;//1
+                int currLevel = int.Parse(lines[i%9].Trim()); //i=11
+                i++;//2
+                int points = int.Parse(lines[i%8].Trim()); //i=12
+                i++;//3
 
-                for (int c = 0; c < boardSize; c++)
+                string[] last = lines[i%9].Trim().Split(',');
+                i++;//4
+                if (last.Length != 2) throw new Exception("Invalid last move line.");
+                int lastRow = int.Parse(last[0]);
+                int lastCol = int.Parse(last[1]);
+
+                int?[,] board = new int?[boardSize, boardSize];
+
+                for (int r = 0; r < boardSize; r++)
                 {
-                    board[r, c] = (parts[c] == ".") ? (int?)null : int.Parse(parts[c]);
+                    string[] parts = lines[r + i%9].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    i++; //4,5,6,7,8
+                    if (parts.Length != boardSize)
+                        throw new Exception("Invalid board row at r=" + r);
+
+                    for (int c = 0; c < boardSize; c++)
+                    {
+                        board[r, c] = (parts[c] == ".") ? (int?)null : int.Parse(parts[c]);
+                    }
                 }
+
+                results.Append(new GameState(board, points, lastRow, lastCol, currNum, currLevel));
+
             }
 
-            GameState st = new GameState(board, points, lastRow, lastCol, currNum, currLevel);
-            return st;
+            
+
+            return results;
         }
     }
 }
