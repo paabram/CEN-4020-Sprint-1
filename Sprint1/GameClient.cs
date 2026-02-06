@@ -36,7 +36,7 @@ namespace Ass1
                 Console.WriteLine("Points: " + _engine.Points);
 
                 // check win condition
-                if (_engine.NextNum > _engine.Size * _engine.Size)
+                if (_engine.NextNum > 25)
                 {
                     Console.WriteLine("All squares filled! You win!");
                     if (!_engine.Level2)

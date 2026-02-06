@@ -8,19 +8,19 @@
     "net10.0": []
   },
   "packageFolders": {
-    "C:\\Users\\patri\\.nuget\\packages\\": {}
+    "/home/patrick/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\patri\\Desktop\\code\\CEN 4020\\CEN-4020-Sprint-1\\Sprint1\\Sprint1.csproj",
+      "projectUniqueName": "/home/patrick/code/CEN-4020-Sprint-1/Sprint1/Sprint1.csproj",
       "projectName": "Sprint1",
-      "projectPath": "C:\\Users\\patri\\Desktop\\code\\CEN 4020\\CEN-4020-Sprint-1\\Sprint1\\Sprint1.csproj",
-      "packagesPath": "C:\\Users\\patri\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\patri\\Desktop\\code\\CEN 4020\\CEN-4020-Sprint-1\\Sprint1\\obj\\",
+      "projectPath": "/home/patrick/code/CEN-4020-Sprint-1/Sprint1/Sprint1.csproj",
+      "packagesPath": "/home/patrick/.nuget/packages/",
+      "outputPath": "/home/patrick/code/CEN-4020-Sprint-1/Sprint1/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\patri\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/home/patrick/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
@@ -68,7 +68,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/10.0.100/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",

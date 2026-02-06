@@ -173,7 +173,6 @@ namespace Ass1
             st.LastRow = LastRow;
             st.LastCol = LastCol;
             st.NextNum = NextNum;
-            Console.WriteLine(Level2);
             st.Level2 = Level2;
             st.recordedMoves = _history.ToArray();
             return st;
@@ -191,7 +190,6 @@ namespace Ass1
             LastCol = state.LastCol;
             NextNum = state.NextNum;
             Level2 = state.Level2;
-            Console.WriteLine(Level2);
             _history = new Stack<MoveInformation>();
             if (state.recordedMoves != null)
             {
@@ -235,7 +233,6 @@ namespace Ass1
 			//nulling every element in _board except 1
 			//keep 1 at same place
             // when on level 1, clear whole board
-            Console.WriteLine(Level2);
             if (!Level2) {
                 for (int r = 0; r < Size; r++)
                     for (int c = 0; c < Size; c++)

@@ -129,6 +129,7 @@ namespace Ass1
             st.LastCol = lastCol;
             st.NextNum = nextNum;
             st.Size = size;
+            st.Level2 = level2;
             st.Board = board;
             st.recordedMoves = recordedMoves;
             return st;
