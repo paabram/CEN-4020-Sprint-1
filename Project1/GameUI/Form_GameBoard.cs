@@ -87,6 +87,10 @@ namespace GameUI
 
         private async void tryPlaceValue(int row, int col, string value)
         {
+            string assetsFolder = AppDomain.CurrentDomain.BaseDirectory + "\\assets";
+            SoundPlayer failureSound = new SoundPlayer(@assetsFolder + "\\failure.wav");
+            SoundPlayer successSound = new SoundPlayer(@assetsFolder + "\\success.wav");
+            SoundPlayer completionSound = new SoundPlayer(@assetsFolder + "\\completion.wav");
             int intValue;
             bool isNumber = int.TryParse(value, out intValue);
             bool isCurrentNumber = intValue == gameEngine.GetCurrentNumber();
@@ -98,11 +102,12 @@ namespace GameUI
                 int currentNumber = gameEngine.GetCurrentNumber();
                 if (currentNumber > gameEngine.getBoardSize() * gameEngine.getBoardSize())
                 {
+                    completionSound.Play();
                     var finalTxtBox = this.Controls.Find(txtBoxName, true).FirstOrDefault() as TextBox;
                     var finalBtn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
                     finalTxtBox.Text = $"{currentNumber-1}";
                     finalBtn.BackColor = System.Drawing.Color.Green;
-                    DialogResult dr = MessageBox.Show("Congratulations! You Won! Would you like to start a new game?", null, MessageBoxButtons.YesNo);
+                    DialogResult dr = MessageBox.Show("Congratulations! You Won! Would you like to start a new game?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
                     if(dr == DialogResult.Yes)
                     {
                         GameState newState = new GameState(gameEngine.getBoardSize());
@@ -115,19 +120,20 @@ namespace GameUI
                         Application.Exit();
                     }
                 }
+                successSound.Play();
                 var txtBox = this.Controls.Find(txtBoxName, true).FirstOrDefault() as TextBox;
                 txtBox.Text = $"{currentNumber}";
                 refreshDisplay();
                 return;
             } else
             {
-                SystemSounds.Exclamation.Play();
                 string btnName = $"button_{row + 1}_{col + 1}";
                 string txtBoxName = $"textBox_{row + 1}_{col + 1}";
                 var btn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
                 var txtBox = this.Controls.Find(txtBoxName, true).FirstOrDefault() as TextBox;
                 var defaultColor = btn.BackColor;
 
+                failureSound.Play();
                 btn.BackColor = System.Drawing.Color.Red;
 
                 await Task.Delay(500);
