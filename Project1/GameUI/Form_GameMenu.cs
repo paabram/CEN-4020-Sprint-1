@@ -45,7 +45,20 @@ namespace GameUI
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                gameEngine.SetState(gameSaver.Load(openFileDialog.FileName));
+                GameState[] loadStates = gameSaver.Load(openFileDialog.FileName);
+
+                for (int i = 0; i < loadStates.Length; i++)
+                {
+                    if (i == 0)
+                    {
+                        gameEngine.SetState(loadStates[i]);
+                    }
+                    else
+                    {
+                        gameEngine.history.Push(loadStates[i]);
+                    }
+                }
+
                 this.Hide();
                 gameBoard.Show();
                 gameBoard.refreshDisplay();

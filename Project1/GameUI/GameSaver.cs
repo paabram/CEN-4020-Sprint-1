@@ -90,27 +90,26 @@ namespace GameUI
             string[] lines = File.ReadAllLines(file);
             if (lines.Length < 2 + boardSize) throw new Exception("Save file is too short.");
 
+            int linesPerState = 9;
             for(int i = 0; i < lines.Length; i++)
             {
-                int currNum = int.Parse(lines[i%9].Trim()); //i=10
+                int currNum = int.Parse(lines[i%linesPerState].Trim()); //i=10
+                i++;//0
+                int currLevel = int.Parse(lines[i%linesPerState].Trim()); //i=11
                 i++;//1
-                int currLevel = int.Parse(lines[i%9].Trim()); //i=11
+                int points = int.Parse(lines[i%linesPerState].Trim()); //i=12
                 i++;//2
-                int points = int.Parse(lines[i%8].Trim()); //i=12
-                i++;//3
 
-                string[] last = lines[i%9].Trim().Split(',');
-                i++;//4
+                string[] last = lines[i%linesPerState].Trim().Split(',');
                 if (last.Length != 2) throw new Exception("Invalid last move line.");
                 int lastRow = int.Parse(last[0]);
                 int lastCol = int.Parse(last[1]);
-
                 int?[,] board = new int?[boardSize, boardSize];
 
                 for (int r = 0; r < boardSize; r++)
                 {
-                    string[] parts = lines[r + i%9].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    i++; //4,5,6,7,8
+                    i++;
+                    string[] parts = lines[i%linesPerState].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     if (parts.Length != boardSize)
                         throw new Exception("Invalid board row at r=" + r);
 
