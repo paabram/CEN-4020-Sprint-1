@@ -58,7 +58,7 @@ namespace GameUI
         }
         public void refreshDisplay()
         {
-            GameState currentState = new GameState(gameEngine.GetState());
+            GameState currentState = gameEngine.GetState();
 
             for (int i = 0; i < gameEngine.getBoardSize(); i++)
             {
@@ -74,6 +74,7 @@ namespace GameUI
                     if (currentState.Board[row,col].ToString() == "")
                     {
                         btn.BackColor = System.Drawing.SystemColors.Control;
+                        txtBox.Enabled = true;
                     } else
                     {
                         btn.BackColor = System.Drawing.Color.Green;
@@ -299,7 +300,7 @@ namespace GameUI
             }
             else if (gameEngine.history.Count == 1)
             {
-                GameState targetState = gameEngine.history.Pop();
+                GameState targetState = new GameState(gameEngine.history.Pop());
                 gameEngine.SetState(targetState);
                 clearDisplay();
                 refreshDisplay();

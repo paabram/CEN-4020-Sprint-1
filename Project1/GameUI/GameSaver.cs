@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -81,26 +82,23 @@ namespace GameUI
             }
         }
 
-        public GameState[] Load(string file)
+        public List<GameState> Load(string file)
         {
-            GameState[] results = { };
-
-       
             
+            List<GameState> results = new List<GameState>();
             string[] lines = File.ReadAllLines(file);
             if (lines.Length < 2 + boardSize) throw new Exception("Save file is too short.");
 
-            int linesPerState = 9;
             for(int i = 0; i < lines.Length; i++)
             {
-                int currNum = int.Parse(lines[i%linesPerState].Trim()); //i=10
+                int currNum = int.Parse(lines[i].Trim()); //i=10
                 i++;//0
-                int currLevel = int.Parse(lines[i%linesPerState].Trim()); //i=11
+                int currLevel = int.Parse(lines[i].Trim()); //i=11
                 i++;//1
-                int points = int.Parse(lines[i%linesPerState].Trim()); //i=12
+                int points = int.Parse(lines[i].Trim()); //i=12
                 i++;//2
 
-                string[] last = lines[i%linesPerState].Trim().Split(',');
+                string[] last = lines[i].Trim().Split(',');
                 if (last.Length != 2) throw new Exception("Invalid last move line.");
                 int lastRow = int.Parse(last[0]);
                 int lastCol = int.Parse(last[1]);
@@ -109,7 +107,7 @@ namespace GameUI
                 for (int r = 0; r < boardSize; r++)
                 {
                     i++;
-                    string[] parts = lines[i%linesPerState].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] parts = lines[i].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     if (parts.Length != boardSize)
                         throw new Exception("Invalid board row at r=" + r);
 
@@ -119,8 +117,7 @@ namespace GameUI
                     }
                 }
 
-                results.Append(new GameState(board, points, lastRow, lastCol, currNum, currLevel));
-
+                results.Add(new GameState(board, points, lastRow, lastCol, currNum, currLevel));
             }
 
             

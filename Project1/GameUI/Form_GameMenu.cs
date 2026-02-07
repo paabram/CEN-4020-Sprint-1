@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace GameUI
@@ -45,9 +46,8 @@ namespace GameUI
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                GameState[] loadStates = gameSaver.Load(openFileDialog.FileName);
-
-                for (int i = 0; i < loadStates.Length; i++)
+                List<GameState> loadStates = gameSaver.Load(openFileDialog.FileName);
+                for (int i = loadStates.Count - 1; i >= 0; i--)
                 {
                     if (i == 0)
                     {
