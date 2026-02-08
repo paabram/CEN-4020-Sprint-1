@@ -78,6 +78,68 @@ namespace GameUI
             history = new Stack<GameState>();
         }
 
+        public bool isInRow(int value, int row)
+        {
+            for (int i = 1; i < getBoardSize()-1; i++)
+            {
+                if(value == gameState.Board[row, i])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool isInCol(int value, int col)
+        {
+            for (int i = 1; i < getBoardSize() - 1; i++)
+            {
+                if (value == gameState.Board[i, col])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool isOnDiagonal(int value, int row, int col)
+        {
+            bool topleft = (row == 0) && (col == 0);
+            bool topright = (row == 0) && (col == 7);
+            bool bottomleft = (row == 7) && (col == 0);
+            bool bottomright = (row == 7) && (col == 7);
+
+            if (topleft || bottomright)
+            {
+                int j = 1;
+                for (int i = 1; i < getBoardSize(); i++)
+                {
+                    if (gameState.Board[i, j] == value)
+                    {
+                        return true; 
+                    }
+                    j++;
+                }
+
+                return false;
+            } else if (bottomleft || bottomright)
+            {
+                int j = 6;
+                for (int i = 1; i < getBoardSize(); i++)
+                {
+                    if (gameState.Board[i,j] == value)
+                    {
+                        return true;
+                    }
+                    j--;
+                }
+                return false;
+            } else
+            {
+                return false;
+            }
+        }
+
         public bool Place(int value, int row, int col)
         {
 
@@ -86,29 +148,52 @@ namespace GameUI
             bool isNotAdjacentRow = ((gameState.LastRow != -1 && gameState.LastRow > row + 1) || (gameState.LastRow != -1 && gameState.LastRow < row - 1));
             bool isNotAdjacentCol = ((gameState.LastCol != -1 && gameState.LastCol > col + 1) || (gameState.LastCol != -1 && gameState.LastCol < col - 1));
 
-            if (occupied || outOfBounds || isNotAdjacentRow || isNotAdjacentCol)
+            if(GetCurrentLevel() == 1)
             {
-                return false;
-            }
-            GameState previousMove = new GameState(GetState());
-            history.Push(previousMove);
-
-            gameState.Board[row, col] = value;
-
-            gameState.currentNumber++;
-
-            // reward: diagonal corner cell of predecessor
-            if (gameState.LastRow != -1 && gameState.LastCol != -1)
-            {
-                if (Math.Abs(row - gameState.LastRow) == 1 && Math.Abs(col - gameState.LastCol) == 1)
+                if (occupied || outOfBounds || isNotAdjacentRow || isNotAdjacentCol)
                 {
-                    gameState.Points += 1;
+                    return false;
                 }
-            }
+                GameState previousMove = new GameState(GetState());
+                history.Push(previousMove);
 
-            gameState.LastRow = row;
-            gameState.LastCol = col;
-            return true;
+                gameState.Board[row, col] = value;
+
+                gameState.currentNumber++;
+
+                // reward: diagonal corner cell of predecessor
+                if (gameState.LastRow != -1 && gameState.LastCol != -1)
+                {
+                    if (Math.Abs(row - gameState.LastRow) == 1 && Math.Abs(col - gameState.LastCol) == 1)
+                    {
+                        gameState.Points += 1;
+                    }
+                }
+
+                gameState.LastRow = row;
+                gameState.LastCol = col;
+                return true;
+            } else  //current level = 2
+            {
+                bool isNotInRow = !isInRow(value, row);
+                bool isNotInCol = !isInCol(value, col);
+                bool isNotOnDiagonal = !isOnDiagonal(value, row, col);
+
+                if (occupied || isNotInRow || isNotInCol)
+                {
+                    if(isNotOnDiagonal)
+                    {
+                        return false;
+                    }
+                }
+
+                GameState previousMove = new GameState(GetState());
+                history.Push(previousMove);
+
+                gameState.Board[row,col] = value;
+                return true;
+            }
+         
         }
 
         public int? GetCell(int r, int c)

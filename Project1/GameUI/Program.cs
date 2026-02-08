@@ -17,7 +17,8 @@ namespace GameUI
 
             GameEngine engine = new GameEngine(5);
             GameSaver saver = new GameSaver(5);
-            Form_GameBoard GameBoard = new Form_GameBoard(engine, saver);
+            Form_GameBoardLvl2 GameBoardLvl2 = new Form_GameBoardLvl2(engine, saver);
+            Form_GameBoard GameBoard = new Form_GameBoard(engine, saver, GameBoardLvl2);
             Form_GameMenu GameMenu = new Form_GameMenu(engine, saver);
 
 

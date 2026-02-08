@@ -61,6 +61,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Form_GameBoardLvl2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form_GameBoardLvl2.Designer.cs">
+      <DependentUpon>Form_GameBoardLvl2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form_GameBoard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,6 +83,9 @@
     <Compile Include="GameSaver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form_GameBoardLvl2.resx">
+      <DependentUpon>Form_GameBoardLvl2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form_GameBoard.resx">
       <DependentUpon>Form_GameBoard.cs</DependentUpon>
     </EmbeddedResource>
