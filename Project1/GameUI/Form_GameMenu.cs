@@ -7,6 +7,7 @@ namespace GameUI
     public partial class Form_GameMenu : Form
     {
         Form_GameBoard gameBoard;
+        Form_GameBoardLvl2 gameBoardLvl2;
         GameEngine gameEngine;
         GameSaver gameSaver;
 
@@ -14,6 +15,13 @@ namespace GameUI
         {
             this.gameBoard = GameBoard;
         }
+
+        public void SetGameBoardLvl2(Form_GameBoardLvl2 GameBoardLvl2)
+        {
+            this.gameBoardLvl2 = GameBoardLvl2;
+        }
+
+
 
         public Form_GameMenu()
         {
@@ -58,10 +66,19 @@ namespace GameUI
                         gameEngine.history.Push(loadStates[i]);
                     }
                 }
+                if(gameEngine.GetCurrentLevel() == 1)
+                {
+                    this.Hide();
+                    gameBoard.Show();
+                    gameBoard.refreshDisplay();
+                } else
+                {
+                    gameEngine.setBoardSize(7);
+                    this.Hide();
+                    gameBoardLvl2.Show();
+                    gameBoardLvl2.refreshDisplay(); 
+                }
 
-                this.Hide();
-                gameBoard.Show();
-                gameBoard.refreshDisplay();
             } 
         }
 
@@ -78,7 +95,13 @@ namespace GameUI
         private void button_Continue_Click(object sender, EventArgs e)
         {
             this.Hide();
-            gameBoard.Show();
+            if(gameEngine.GetCurrentLevel() == 1)
+            {
+                gameBoard.Show();
+            } else
+            {
+                gameBoardLvl2.Show();
+            }
         }
     }
 }

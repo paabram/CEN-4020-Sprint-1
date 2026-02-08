@@ -23,7 +23,9 @@ namespace GameUI
 
 
             GameMenu.SetGameBoard(GameBoard);
+            GameMenu.SetGameBoardLvl2(GameBoardLvl2);
             GameBoard.SetGameMenu(GameMenu);
+            GameBoardLvl2.SetGameMenu(GameMenu);
             GameBoard.Height = GameMenu.Height;
             GameBoard.Width = GameMenu.Width;
             GameBoard.SetDesktopLocation(GameMenu.DesktopLocation.X, GameBoard.DesktopLocation.Y); ;

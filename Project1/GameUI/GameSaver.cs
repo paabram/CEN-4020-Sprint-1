@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace GameUI
 {
@@ -68,16 +70,32 @@ namespace GameUI
                 w.WriteLine(state.currentLevel);
                 w.WriteLine(state.Points);
                 w.WriteLine(state.LastRow + "," + state.LastCol);
-
-                for (int r = 0; r < boardSize; r++)
+                if (state.currentLevel == 1)
                 {
-                    for (int c = 0; c < boardSize; c++)
+                    for (int r = 0; r < boardSize; r++)
                     {
-                        string cell = state.Board[r, c].HasValue ? state.Board[r, c].Value.ToString() : ".";
-                        w.Write(cell);
-                        if (c < boardSize - 1) w.Write(" ");
+                        for (int c = 0; c < boardSize; c++)
+                        {
+                            string cell = state.Board[r, c].HasValue ? state.Board[r, c].Value.ToString() : ".";
+                            w.Write(cell);
+                            if (c < boardSize - 1) w.Write(" ");
+                        }
+                        w.WriteLine();
                     }
-                    w.WriteLine();
+                } else
+                {
+                    int Level2Size = boardSize + 2;
+
+                    for (int r = 0; r < Level2Size; r++)
+                    {
+                        for (int c = 0; c < Level2Size; c++)
+                        {
+                            string cell = state.Board[r, c].HasValue ? state.Board[r, c].Value.ToString() : ".";
+                            w.Write(cell);
+                            if (c < Level2Size - 1) w.Write(" ");
+                        }
+                        w.WriteLine();
+                    }
                 }
             }
         }
@@ -102,22 +120,46 @@ namespace GameUI
                 if (last.Length != 2) throw new Exception("Invalid last move line.");
                 int lastRow = int.Parse(last[0]);
                 int lastCol = int.Parse(last[1]);
-                int?[,] board = new int?[boardSize, boardSize];
-
-                for (int r = 0; r < boardSize; r++)
+                if (currLevel == 1)
                 {
-                    i++;
-                    string[] parts = lines[i].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (parts.Length != boardSize)
-                        throw new Exception("Invalid board row at r=" + r);
+                    int?[,] board = new int?[boardSize, boardSize];
 
-                    for (int c = 0; c < boardSize; c++)
+                    for (int r = 0; r < boardSize; r++)
                     {
-                        board[r, c] = (parts[c] == ".") ? (int?)null : int.Parse(parts[c]);
+                        i++;
+                        string[] parts = lines[i].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (parts.Length != boardSize)
+                            throw new Exception("Invalid board row at r=" + r);
+
+                        for (int c = 0; c < boardSize; c++)
+                        {
+                            board[r, c] = (parts[c] == ".") ? (int?)null : int.Parse(parts[c]);
+                        }
                     }
+
+                    results.Add(new GameState(board, points, lastRow, lastCol, currNum, currLevel));
+
+                } else
+                {
+                    int Level2Size = boardSize + 2;
+
+                    int?[,] board = new int?[Level2Size, Level2Size];
+                    for (int r = 0; r < Level2Size; r++)
+                    {
+                        i++;
+                        string[] parts = lines[i].Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (parts.Length != Level2Size)
+                            throw new Exception("Invalid board row at r=" + r);
+
+                        for (int c = 0; c < Level2Size; c++)
+                        {
+                            board[r, c] = (parts[c] == ".") ? (int?)null : int.Parse(parts[c]);
+                        }
+                    }
+
+                    results.Add(new GameState(board, points, lastRow, lastCol, currNum, currLevel));
                 }
 
-                results.Add(new GameState(board, points, lastRow, lastCol, currNum, currLevel));
             }
 
             

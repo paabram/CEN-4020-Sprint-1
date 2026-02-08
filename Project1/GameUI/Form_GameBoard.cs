@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Media;
 using System.Threading.Tasks;
 using System.Drawing;
+using System.Net.Configuration;
 
 namespace GameUI
 {
@@ -119,8 +120,8 @@ namespace GameUI
                     if(dr == DialogResult.Yes)
                     {
                         gameBoardLvl2.loadLevel2();
-                        this.Hide();
                         gameBoardLvl2.Show();
+                        this.Hide();
                         return;
                     } else
                     {
@@ -159,15 +160,21 @@ namespace GameUI
         }
         private void Form_GameBoard_FormClosing(object sender, FormClosingEventArgs e)
         {
-            DialogResult result = MessageBox.Show(this, "Are you sure you want to exit?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
+            if (gameEngine.GetCurrentLevel() != 1)
             {
-                e.Cancel = false;
-            }
-            else
+
+            } else
             {
-                e.Cancel = true;
-            }
+                DialogResult result = MessageBox.Show(this, "Are you sure you want to exit?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    e.Cancel = false;
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }   
         }
 
         private void button_ReturnToMenu_Click(object sender, EventArgs e)

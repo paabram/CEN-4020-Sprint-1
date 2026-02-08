@@ -175,25 +175,46 @@ namespace GameUI
                 return true;
             } else  //current level = 2
             {
-                bool isNotInRow = !isInRow(value, row);
-                bool isNotInCol = !isInCol(value, col);
-                bool isNotOnDiagonal = !isOnDiagonal(value, row, col);
+                var (targetRow, targetCol) = FindIndexInL1(value);
 
-                if (occupied || isNotInRow || isNotInCol)
+                if (targetRow == -1  && targetCol == -1 || occupied || value != GetCurrentNumber())
                 {
-                    if(isNotOnDiagonal)
-                    {
-                        return false;
-                    }
+                    return false;
+                }
+
+                if (!((row == targetRow) ||
+                      (col == targetCol) ||
+                      (row == col && targetRow == targetCol) ||
+                      (row + col == getBoardSize() - 1 && targetRow + targetCol == getBoardSize() - 1))
+                   )
+                {
+                    return false;
                 }
 
                 GameState previousMove = new GameState(GetState());
                 history.Push(previousMove);
 
                 gameState.Board[row,col] = value;
+                gameState.currentNumber++;
                 return true;
             }
          
+        }
+
+        public (int, int) FindIndexInL1(int value)
+        {
+            for (int r = 1; r < getBoardSize() - 1; r++)
+            {
+               for (int c = 1; c < getBoardSize() - 1; c++)
+                {
+                    if (gameState.Board[r,c] == value)
+                    {
+                        return (r, c);
+                    }
+                }
+            }
+
+            return (-1, -1);
         }
 
         public int? GetCell(int r, int c)
@@ -214,9 +235,14 @@ namespace GameUI
             return st;
         }
 
+        public void ClearHistory()
+        {
+            history.Clear();
+        }
+
         public void SetState(GameState state)
         {
-            this.gameState = state;
+            this.gameState = new GameState(state);
         }
     }
 

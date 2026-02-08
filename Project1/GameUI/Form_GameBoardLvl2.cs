@@ -38,6 +38,7 @@ namespace GameUI
 
         public void loadLevel2()
         {
+            gameEngine.ClearHistory();
             GameState currentState = new GameState(gameEngine.GetState());
             GameState newState = new GameState(7);
 
@@ -57,8 +58,11 @@ namespace GameUI
             label_CurrentNumber.Text = currentState.currentNumber.ToString();
             label_currentPoints.Text = currentState.Points.ToString();
             newState.Points = currentState.Points;
+            newState.currentNumber = 1;
+            newState.currentLevel = 2;
             gameEngine.setBoardSize(7);
             gameEngine.SetState(newState);
+            refreshDisplay();
         }
 
         public void clearDisplay()
@@ -67,6 +71,10 @@ namespace GameUI
             {
                 for (int j = 0; j < gameEngine.getBoardSize(); j++)
                 {
+                    if (i >= 1 && i <= 5 && j >= 1 && j <= 5)
+                    {
+                        continue;
+                    }
                     int row = i;
                     int col = j;
                     string btnName = $"button_{row + 1}_{col + 1}";
@@ -85,20 +93,35 @@ namespace GameUI
         {
             GameState currentState = gameEngine.GetState();
 
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 7; i++)
             {
-                for (int j = 0; j < 6; j++)
+                for (int j = 0; j < 7; j++)
                 {
                     int row = i;
                     int col = j;
 
-                    if (row == 0 || row == 6 || col == 0 || col ==6)
+                    if ((row == 0) || (col == 0) || (row == 6) || (col == 6))
                     {
                         string txtBoxName = $"textBox_{row + 1}_{col + 1}";
                         var textBox = this.Controls.Find(txtBoxName, true).FirstOrDefault() as TextBox;
                         string btnName = $"button_{row + 1}_{col + 1}";
                         var btn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
                         textBox.Text = currentState.Board[row, col].ToString();
+                        if (textBox.Text == "")
+                        {
+                            btn.BackColor = System.Drawing.SystemColors.Control;
+                            textBox.Enabled = true;
+                        } else
+                        {
+                            btn.BackColor = System.Drawing.Color.Green;
+                            textBox.Enabled = false;
+                        }
+                    } else
+                    {
+                        string btnName = $"button_{row + 1}_{col + 1}";
+                        var btn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
+                        btn.Text = currentState.Board[row, col].ToString();
+                        btn.BackColor = System.Drawing.Color.Green;
                     }
                 }
             }
@@ -126,24 +149,27 @@ namespace GameUI
                     completionSound.Play();
                     var finalTxtBox = this.Controls.Find(txtBoxName, true).FirstOrDefault() as TextBox;
                     var finalBtn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
-                    finalTxtBox.Text = $"{currentNumber-1}";
+                    finalTxtBox.Text = $"{currentNumber - 1}";
                     finalBtn.BackColor = System.Drawing.Color.Green;
                     DialogResult dr = MessageBox.Show("Congratulations! You Won! Would you like to start a new game?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
-                    if(dr == DialogResult.Yes)
-                    {
-                        GameState newState = new GameState(gameEngine.getBoardSize());
-                        gameEngine.SetState(newState);
-                        gameEngine.history.Clear();
-                        refreshDisplay();
-                        return;
-                    } else
+                    if (dr != DialogResult.Yes)
                     {
                         Application.Exit();
                     }
+                    else
+                    {
+                        GameState newState = new GameState(gameEngine.getBoardSize());
+                        gameEngine.SetState(newState);
+                        gameEngine.ClearHistory();
+                        refreshDisplay();
+                        return;
+                    }
                 }
                 successSound.Play();
+                var btn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
                 var txtBox = this.Controls.Find(txtBoxName, true).FirstOrDefault() as TextBox;
-                txtBox.Text = $"{currentNumber}";
+                txtBox.Text = $"{value}";
+                btn.BackColor = System.Drawing.Color.Green;
                 refreshDisplay();
                 return;
             } else
@@ -193,12 +219,59 @@ namespace GameUI
 
         private void button_Save_Click(object sender, EventArgs e)
         {
+            int fileNumber = gameSaver.getLatestFileNumber();
+            string filepath = AppDomain.CurrentDomain.BaseDirectory;
 
+            if (fileNumber == 0)
+            {
+                string savepath = filepath + "/Saves/Save1.txt";
+                gameSaver.Save(savepath, gameEngine.GetState());
+                foreach (GameState state in gameEngine.history)
+                {
+                    gameSaver.Save(savepath, state);
+                }
+            }
+            else if (fileNumber > 25)
+            {
+                fileNumber = 1;
+                string savepath = filepath + $"Saves\\Save{fileNumber}.txt";
+                gameSaver.Save(savepath, gameEngine.GetState());
+                foreach (GameState state in gameEngine.history)
+                {
+                    gameSaver.Save(savepath, state);
+                }
+            }
+            else
+            {
+                string savepath = filepath + $"Saves/Save{fileNumber + 1}.txt";
+                gameSaver.Save(savepath, gameEngine.GetState());
+                foreach (GameState state in gameEngine.history)
+                {
+                    gameSaver.Save(savepath, state);
+                }
+            }
         }
 
         private void button_Undo_Click(object sender, EventArgs e)
         {
-
+            if (gameEngine.history.Count <= 0)
+            {
+                return;
+            }
+            else if (gameEngine.history.Count == 1)
+            {
+                GameState targetState = new GameState(gameEngine.history.Pop());
+                gameEngine.SetState(targetState);
+                clearDisplay();
+                refreshDisplay();
+            }
+            else
+            {
+                GameState targetState = gameEngine.history.Pop();
+                gameEngine.SetState(targetState);
+                clearDisplay();
+                refreshDisplay();
+            }
         }
 
         private void textBox_1_1_KeyDown(object sender, KeyEventArgs e)
@@ -465,6 +538,9 @@ namespace GameUI
             }
         }
 
-
+        private void button_Exit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }
