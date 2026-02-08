@@ -49,9 +49,13 @@ namespace GameUI
         }
 
         // Save format:
-        // line1: points
-        // line2: lastRow,lastCol
-        // next 5 lines: board rows with "." for empty
+        // line1: currentNumber
+        // line2: currentLevel
+        // line3: points
+        // line4: lastRow,lastCol
+        // next 5/7 lines: board rows with "." for empty
+        // line10/12: userName(if any)
+        // line11/13: saveDateTime(if any)
         public void Save(string file, GameState state)
         {
             if (state == null || state.Board == null)
@@ -82,7 +86,10 @@ namespace GameUI
                         }
                         w.WriteLine();
                     }
-                } else
+                    w.WriteLine(state.userName);
+                    w.WriteLine(state.saveDateTime);
+                }
+                else
                 {
                     int Level2Size = boardSize + 2;
 
@@ -96,6 +103,8 @@ namespace GameUI
                         }
                         w.WriteLine();
                     }
+                    w.WriteLine(state.userName);
+                    w.WriteLine(state.saveDateTime);
                 }
             }
         }
@@ -137,7 +146,12 @@ namespace GameUI
                         }
                     }
 
-                    results.Add(new GameState(board, points, lastRow, lastCol, currNum, currLevel));
+                    i++;
+                    string uName = lines[i].Trim();
+                    i++;
+                    string saveDate = lines[i].Trim();
+
+                    results.Add(new GameState(board, points, lastRow, lastCol, currNum, currLevel, uName, saveDate));
 
                 } else
                 {
@@ -156,6 +170,11 @@ namespace GameUI
                             board[r, c] = (parts[c] == ".") ? (int?)null : int.Parse(parts[c]);
                         }
                     }
+
+                    i++;
+                    string uName = lines[i].Trim();
+                    i++;
+                    string saveDate = lines[i].Trim();
 
                     results.Add(new GameState(board, points, lastRow, lastCol, currNum, currLevel));
                 }
