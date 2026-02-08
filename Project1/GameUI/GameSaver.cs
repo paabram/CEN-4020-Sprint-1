@@ -178,11 +178,7 @@ namespace GameUI
 
                     results.Add(new GameState(board, points, lastRow, lastCol, currNum, currLevel));
                 }
-
             }
-
-            
-
             return results;
         }
     }

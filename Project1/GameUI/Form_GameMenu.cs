@@ -103,5 +103,10 @@ namespace GameUI
                 gameBoardLvl2.Show();
             }
         }
+
+        private void button_LeaderBoard1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
