@@ -33,6 +33,7 @@ namespace GameUI
         {
             InitializeComponent();
             this.gameEngine = targetEngine;
+            this.gameEngine.placeRandomOne();
             this.gameSaver = targetSaver;
             this.gameBoardLvl2 = gameBoardLv2;
         }

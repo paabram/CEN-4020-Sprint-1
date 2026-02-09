@@ -28,15 +28,11 @@ namespace GameUI
         }
         public GameState(int size)
         {
-            Random rand = new Random();
-            int randomRow = rand.Next(size);
-            int randomCol = rand.Next(size);
             this.Board = new int?[size, size];
-            this.Board[randomRow, randomCol] = 1;
             this.Points = 0;
-            this.LastRow = randomRow;
-            this.LastCol = randomCol;
-            this.currentNumber = 2;
+            this.LastRow = -1;
+            this.LastCol = -1;
+            this.currentNumber = 1;
             this.currentLevel = 1;
             this.userName = "";
             this.saveDateTime = "";
@@ -92,7 +88,7 @@ namespace GameUI
         }
     }
 
-        public class GameEngine
+    public class GameEngine
     {
         private int _size;
 
@@ -288,6 +284,18 @@ namespace GameUI
         {
             gameState.userName = name;
             gameState.saveDateTime = date;
+        }
+
+        public void placeRandomOne()
+        {
+            Random rand = new Random();
+            int randomRow = rand.Next(_size);
+            int randomCol = rand.Next(_size);
+            gameState.Board[randomRow, randomCol] = 1;
+            gameState.LastRow = randomRow;
+            gameState.LastCol = randomCol;
+            gameState.currentNumber = 2;
+
         }
     }
 
