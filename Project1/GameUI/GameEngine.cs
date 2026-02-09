@@ -11,6 +11,8 @@ namespace GameUI
         public int LastCol;
         public int currentNumber;
         public int currentLevel;
+        public string userName;
+        public string saveDateTime;
 
         public GameState()
         {
@@ -20,6 +22,8 @@ namespace GameUI
             this.LastCol = -1;
             this.currentNumber = 1;
             this.currentLevel = 1;
+            this.userName = "";
+            this.saveDateTime = "";
         }
         public GameState(int size)
         {
@@ -29,6 +33,8 @@ namespace GameUI
             this.LastCol = -1;
             this.currentNumber = 1;
             this.currentLevel = 1;
+            this.userName = "";
+            this.saveDateTime = "";
         }
 
         public GameState(int?[,] inputBoard, int inputPoints, int inputLastRow, int inputLastCol, int inputCurrentNumber, int inputCurrentLevel)
@@ -39,6 +45,20 @@ namespace GameUI
             this.LastCol = inputLastCol;
             this.currentNumber = inputCurrentNumber;
             this.currentLevel = inputCurrentLevel;
+            this.userName = "";
+            this.saveDateTime = "";
+        }
+
+        public GameState(int?[,] inputBoard, int inputPoints, int inputLastRow, int inputLastCol, int inputCurrentNumber, int inputCurrentLevel, string inputName, string inputDate)
+        {
+            this.Board = inputBoard;
+            this.Points = inputPoints;
+            this.LastRow = inputLastRow;
+            this.LastCol = inputLastCol;
+            this.currentNumber = inputCurrentNumber;
+            this.currentLevel = inputCurrentLevel;
+            this.userName = inputName;
+            this.saveDateTime = inputDate;
         }
 
         public GameState(GameState otherState)
@@ -49,11 +69,25 @@ namespace GameUI
             this.LastCol = otherState.LastCol;
             this.currentNumber = otherState.currentNumber;
             this.currentLevel = otherState.currentLevel;
+            this.userName = otherState.userName;
+            this.saveDateTime = otherState.saveDateTime;
+        }
+
+        public GameState(GameState otherState, string userName, string saveDt)
+        {
+            this.Board = (int?[,])otherState.Board.Clone();
+            this.Points = otherState.Points;
+            this.LastRow = otherState.LastRow;
+            this.LastCol = otherState.LastCol;
+            this.currentNumber = otherState.currentNumber;
+            this.currentLevel = otherState.currentLevel;
+            this.userName = userName;
+            this.saveDateTime = saveDt;
+
         }
     }
 
-
-    public class GameEngine
+        public class GameEngine
     {
         private int _size;
 
@@ -243,6 +277,12 @@ namespace GameUI
         public void SetState(GameState state)
         {
             this.gameState = new GameState(state);
+        }
+
+        public void SetNameDate(string name, string date)
+        {
+            gameState.userName = name;
+            gameState.saveDateTime = date;
         }
     }
 

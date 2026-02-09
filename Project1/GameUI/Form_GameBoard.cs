@@ -116,6 +116,43 @@ namespace GameUI
                     var finalBtn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
                     finalTxtBox.Text = $"{currentNumber-1}";
                     finalBtn.BackColor = System.Drawing.Color.Green;
+
+                    //get name and date, and autosave after level completion
+                    string username = Prompt.ShowDialog("Enter your name:", "Checkpoint!");
+                    string currDateTime = "" + DateTime.Now;
+                    gameEngine.SetNameDate(username, currDateTime);
+                    int fileNumber = gameSaver.getLatestFileNumber();
+                    string filepath = AppDomain.CurrentDomain.BaseDirectory;
+
+                    if (fileNumber == 0)
+                    {
+                        string savepath = filepath + "/Saves/Save1.txt";
+                        gameSaver.Save(savepath, gameEngine.GetState());
+                        foreach (GameState state in gameEngine.history)
+                        {
+                            gameSaver.Save(savepath, state);
+                        }
+                    }
+                    else if (fileNumber > 25)
+                    {
+                        fileNumber = 1;
+                        string savepath = filepath + $"Saves\\Save{fileNumber + 1}.txt";
+                        gameSaver.Save(savepath, gameEngine.GetState());
+                        foreach (GameState state in gameEngine.history)
+                        {
+                            gameSaver.Save(savepath, state);
+                        }
+                    }
+                    else
+                    {
+                        string savepath = filepath + $"Saves/Save{fileNumber + 1}.txt";
+                        gameSaver.Save(savepath, gameEngine.GetState());
+                        foreach (GameState state in gameEngine.history)
+                        {
+                            gameSaver.Save(savepath, state);
+                        }
+                    }
+
                     DialogResult dr = MessageBox.Show("Congratulations! You Won! Would you like to move on to level 2?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
                     if(dr == DialogResult.Yes)
                     {
@@ -203,6 +240,13 @@ namespace GameUI
                 clearDisplay();
                 refreshDisplay();
             }
+        }
+        private void button_Clear_Click(object sender, EventArgs e)
+        {
+            GameState newState = new GameState(gameEngine.getBoardSize());
+            gameEngine.SetState(newState);
+            gameEngine.ClearHistory();
+            refreshDisplay();
         }
 
         private void button_Exit_Click(object sender, EventArgs e)
@@ -518,4 +562,32 @@ namespace GameUI
             }
         }
     }
+
+    //Prompt class definition found here: https://stackoverflow.com/questions/5427020/prompt-dialog-in-windows-forms
+    //- Josueh R
+    public static class Prompt
+    {
+        public static string ShowDialog(string text, string caption)
+        {
+            Form prompt = new Form()
+            {
+                Width = 400,
+                Height = 150,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = caption,
+                StartPosition = FormStartPosition.CenterScreen
+            };
+            Label textLabel = new Label() { Left = 150, Top = 20, Text = text };
+            TextBox textBox = new TextBox() { Left = 50, Top = 50, Width = 300 };
+            Button confirmation = new Button() { Text = "Ok", Left = 150, Width = 100, Top = 70, DialogResult = DialogResult.OK };
+            confirmation.Click += (sender, e) => { prompt.Close(); };
+            prompt.Controls.Add(textBox);
+            prompt.Controls.Add(confirmation);
+            prompt.Controls.Add(textLabel);
+            prompt.AcceptButton = confirmation;
+
+            return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
+        }
+    }
+
 }

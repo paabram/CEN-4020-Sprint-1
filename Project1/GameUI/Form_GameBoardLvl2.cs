@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Media;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace GameUI
 {
@@ -58,7 +59,7 @@ namespace GameUI
             label_CurrentNumber.Text = currentState.currentNumber.ToString();
             label_currentPoints.Text = currentState.Points.ToString();
             newState.Points = currentState.Points;
-            newState.currentNumber = 1;
+            newState.currentNumber = 2;
             newState.currentLevel = 2;
             gameEngine.setBoardSize(7);
             gameEngine.SetState(newState);
@@ -151,6 +152,43 @@ namespace GameUI
                     var finalBtn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
                     finalTxtBox.Text = $"{currentNumber - 1}";
                     finalBtn.BackColor = System.Drawing.Color.Green;
+
+                    //get name and date, and autosave after level completion
+                    string username = Prompt.ShowDialog("Enter your name:", "Checkpoint!");
+                    string currDateTime = "" + DateTime.Now;
+                    gameEngine.SetNameDate(username, currDateTime);
+                    int fileNumber = gameSaver.getLatestFileNumber();
+                    string filepath = AppDomain.CurrentDomain.BaseDirectory;
+
+                    if (fileNumber == 0)
+                    {
+                        string savepath = filepath + "/Saves/Save1.txt";
+                        gameSaver.Save(savepath, gameEngine.GetState());
+                        foreach (GameState state in gameEngine.history)
+                        {
+                            gameSaver.Save(savepath, state);
+                        }
+                    }
+                    else if (fileNumber > 25)
+                    {
+                        fileNumber = 1;
+                        string savepath = filepath + $"Saves\\Save{fileNumber + 1}.txt";
+                        gameSaver.Save(savepath, gameEngine.GetState());
+                        foreach (GameState state in gameEngine.history)
+                        {
+                            gameSaver.Save(savepath, state);
+                        }
+                    }
+                    else
+                    {
+                        string savepath = filepath + $"Saves/Save{fileNumber + 1}.txt";
+                        gameSaver.Save(savepath, gameEngine.GetState());
+                        foreach (GameState state in gameEngine.history)
+                        {
+                            gameSaver.Save(savepath, state);
+                        }
+                    }
+
                     DialogResult dr = MessageBox.Show("Congratulations! You Won! Would you like to start a new game?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
                     if (dr != DialogResult.Yes)
                     {
@@ -541,6 +579,17 @@ namespace GameUI
         private void button_Exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void button_Clear_Click(object sender, EventArgs e)
+        {
+            while (gameEngine.history.Count > 0)
+            {
+                GameState targetState = gameEngine.history.Pop();
+                gameEngine.SetState(targetState);
+                clearDisplay();
+                refreshDisplay();
+            }
         }
     }
 }

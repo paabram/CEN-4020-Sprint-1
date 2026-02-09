@@ -32,6 +32,8 @@
             this.button_LoadGame = new System.Windows.Forms.Button();
             this.button_Exit = new System.Windows.Forms.Button();
             this.button_Continue = new System.Windows.Forms.Button();
+            this.button_LeaderBoard1 = new System.Windows.Forms.Button();
+            this.button_LeaderBoard2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_NewGame
@@ -75,11 +77,33 @@
             this.button_Continue.Visible = false;
             this.button_Continue.Click += new System.EventHandler(this.button_Continue_Click);
             // 
+            // button_LeaderBoard1
+            // 
+            this.button_LeaderBoard1.Location = new System.Drawing.Point(425, 130);
+            this.button_LeaderBoard1.Name = "button_LeaderBoard1";
+            this.button_LeaderBoard1.Size = new System.Drawing.Size(93, 55);
+            this.button_LeaderBoard1.TabIndex = 4;
+            this.button_LeaderBoard1.Text = "Level 1 Leaderboard";
+            this.button_LeaderBoard1.UseVisualStyleBackColor = true;
+            this.button_LeaderBoard1.Click += new System.EventHandler(this.button_LeaderBoard1_Click);
+            // 
+            // button_LeaderBoard2
+            // 
+            this.button_LeaderBoard2.Location = new System.Drawing.Point(425, 191);
+            this.button_LeaderBoard2.Name = "button_LeaderBoard2";
+            this.button_LeaderBoard2.Size = new System.Drawing.Size(93, 54);
+            this.button_LeaderBoard2.TabIndex = 5;
+            this.button_LeaderBoard2.Text = "Level 2 LeaderBoard";
+            this.button_LeaderBoard2.UseVisualStyleBackColor = true;
+            this.button_LeaderBoard2.Click += new System.EventHandler(this.button_LeaderBoard2_Click);
+            // 
             // Form_GameMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button_LeaderBoard2);
+            this.Controls.Add(this.button_LeaderBoard1);
             this.Controls.Add(this.button_Continue);
             this.Controls.Add(this.button_Exit);
             this.Controls.Add(this.button_LoadGame);
@@ -96,5 +120,7 @@
         private System.Windows.Forms.Button button_LoadGame;
         private System.Windows.Forms.Button button_Exit;
         private System.Windows.Forms.Button button_Continue;
+        private System.Windows.Forms.Button button_LeaderBoard1;
+        private System.Windows.Forms.Button button_LeaderBoard2;
     }
 }
