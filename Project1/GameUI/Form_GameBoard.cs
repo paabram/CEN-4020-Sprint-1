@@ -241,6 +241,13 @@ namespace GameUI
                 refreshDisplay();
             }
         }
+        private void button_Clear_Click(object sender, EventArgs e)
+        {
+            GameState newState = new GameState(gameEngine.getBoardSize());
+            gameEngine.SetState(newState);
+            gameEngine.ClearHistory();
+            refreshDisplay();
+        }
 
         private void button_Exit_Click(object sender, EventArgs e)
         {

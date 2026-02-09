@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Media;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace GameUI
 {
@@ -578,6 +579,17 @@ namespace GameUI
         private void button_Exit_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void button_Clear_Click(object sender, EventArgs e)
+        {
+            while (gameEngine.history.Count > 0)
+            {
+                GameState targetState = gameEngine.history.Pop();
+                gameEngine.SetState(targetState);
+                clearDisplay();
+                refreshDisplay();
+            }
         }
     }
 }

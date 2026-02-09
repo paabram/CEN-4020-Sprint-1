@@ -109,6 +109,7 @@
             this.label_currentPoints = new System.Windows.Forms.Label();
             this.label_currNumberText = new System.Windows.Forms.Label();
             this.label_CurrentNumber = new System.Windows.Forms.Label();
+            this.button_Clear = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_1_1
@@ -1003,12 +1004,24 @@
             this.label_CurrentNumber.TabIndex = 29;
             this.label_CurrentNumber.Text = "1";
             // 
+            // button_Clear
+            // 
+            this.button_Clear.Font = new System.Drawing.Font("Calibri", 15.75F, System.Drawing.FontStyle.Bold);
+            this.button_Clear.Location = new System.Drawing.Point(12, 78);
+            this.button_Clear.Name = "button_Clear";
+            this.button_Clear.Size = new System.Drawing.Size(80, 58);
+            this.button_Clear.TabIndex = 106;
+            this.button_Clear.Text = "Clear";
+            this.button_Clear.UseVisualStyleBackColor = true;
+            this.button_Clear.Click += new System.EventHandler(this.button_Clear_Click);
+            // 
             // Form_GameBoardLvl2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button_Clear);
             this.Controls.Add(this.button_2_2);
             this.Controls.Add(this.button_2_3);
             this.Controls.Add(this.button_2_4);
@@ -1194,5 +1207,6 @@
         private System.Windows.Forms.TextBox textBox_7_5;
         private System.Windows.Forms.TextBox textBox_7_6;
         private System.Windows.Forms.TextBox textBox_7_7;
+        private System.Windows.Forms.Button button_Clear;
     }
 }
