@@ -95,6 +95,7 @@
             this.button_LeaderBoard2.TabIndex = 5;
             this.button_LeaderBoard2.Text = "Level 2 LeaderBoard";
             this.button_LeaderBoard2.UseVisualStyleBackColor = true;
+            this.button_LeaderBoard2.Click += new System.EventHandler(this.button_LeaderBoard2_Click);
             // 
             // Form_GameMenu
             // 

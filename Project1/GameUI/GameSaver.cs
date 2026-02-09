@@ -176,7 +176,7 @@ namespace GameUI
                     i++;
                     string saveDate = lines[i].Trim();
 
-                    results.Add(new GameState(board, points, lastRow, lastCol, currNum, currLevel));
+                    results.Add(new GameState(board, points, lastRow, lastCol, currNum, currLevel, uName, saveDate));
                 }
             }
             return results;
