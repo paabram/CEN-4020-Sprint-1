@@ -9,34 +9,12 @@ namespace GameUI
 {
     public partial class Form_GameBoardLvl2 : Form
     {
-        Form_GameMenu gameMenu;
-        GameEngine gameEngine;
-        GameSaver gameSaver;
-
-        bool gameInProgress = false;
-
-        public void setGameInProgress(bool gameInProgress)
-        { 
-            this.gameInProgress = gameInProgress; 
-        }
-
-        public bool isGameInProgress() { return gameInProgress; }   
-
         public Form_GameBoardLvl2()
         {
             InitializeComponent();
         }
 
-        public Form_GameBoardLvl2(GameEngine targetEngine, GameSaver targetSaver)
-        {
-            InitializeComponent();
-            this.gameEngine = targetEngine;
-            this.gameSaver = targetSaver;
-        }
-
-        public Form_GameMenu GetGameMenu() { return gameMenu; }
-        public void SetGameMenu(Form_GameMenu targetMenu) { gameMenu = targetMenu; }
-
+        /*
         public void loadLevel2()
         {
             gameEngine.ClearHistory();
@@ -65,12 +43,13 @@ namespace GameUI
             gameEngine.SetState(newState);
             refreshDisplay();
         }
+        */
 
         public void clearDisplay()
         {
-            for (int i = 0; i < gameEngine.getBoardSize(); i++)
+            for (int i = 0; i < 7; i++)
             {
-                for (int j = 0; j < gameEngine.getBoardSize(); j++)
+                for (int j = 0; j < 7; j++)
                 {
                     if (i >= 1 && i <= 5 && j >= 1 && j <= 5)
                     {
@@ -90,10 +69,8 @@ namespace GameUI
             label_CurrentNumber.Text = "1";
             label_currentPoints.Text = "0";
         }
-        public void refreshDisplay()
+        public void RefreshDisplay(GameState State)
         {
-            GameState currentState = gameEngine.GetState();
-
             for (int i = 0; i < 7; i++)
             {
                 for (int j = 0; j < 7; j++)
@@ -107,7 +84,7 @@ namespace GameUI
                         var textBox = this.Controls.Find(txtBoxName, true).FirstOrDefault() as TextBox;
                         string btnName = $"button_{row + 1}_{col + 1}";
                         var btn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
-                        textBox.Text = currentState.Board[row, col].ToString();
+                        textBox.Text = State.Board[row, col].ToString();
                         if (textBox.Text == "")
                         {
                             btn.BackColor = System.Drawing.SystemColors.Control;
@@ -121,13 +98,13 @@ namespace GameUI
                     {
                         string btnName = $"button_{row + 1}_{col + 1}";
                         var btn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
-                        btn.Text = currentState.Board[row, col].ToString();
+                        btn.Text = State.Board[row, col].ToString();
                         btn.BackColor = System.Drawing.Color.Green;
                     }
                 }
             }
-            label_CurrentNumber.Text = currentState.currentNumber.ToString();
-            label_currentPoints.Text = currentState.Points.ToString();
+            label_CurrentNumber.Text = State.currentNumber.ToString();
+            label_currentPoints.Text = State.Points.ToString();
         }
 
 
@@ -254,9 +231,11 @@ namespace GameUI
 
         private void button_ReturnToMenu_Click(object sender, EventArgs e)
         {
+            /*
             this.Hide();
             gameMenu.changeContinueVisibility(true);
             gameMenu.Show();
+            */
         }
 
         
@@ -301,6 +280,7 @@ namespace GameUI
 
         private void button_Undo_Click(object sender, EventArgs e)
         {
+            /*
             if (gameEngine.history.Count <= 0)
             {
                 return;
@@ -319,6 +299,7 @@ namespace GameUI
                 clearDisplay();
                 refreshDisplay();
             }
+            */
         }
 
         private void textBox_1_1_KeyDown(object sender, KeyEventArgs e)
@@ -592,6 +573,7 @@ namespace GameUI
 
         private void button_Clear_Click(object sender, EventArgs e)
         {
+            /*
             while (gameEngine.history.Count > 0)
             {
                 GameState targetState = gameEngine.history.Pop();
@@ -599,6 +581,7 @@ namespace GameUI
                 clearDisplay();
                 refreshDisplay();
             }
+            */
         }
     }
 }

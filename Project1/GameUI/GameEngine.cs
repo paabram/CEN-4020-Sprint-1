@@ -98,6 +98,9 @@ namespace GameUI
         GameState gameState;
 
         public Stack<GameState> history;
+
+        public EventHandler<GameState> GameStateChanged;
+        public EventHandler Level1Completed;
         
         
 
@@ -141,8 +144,8 @@ namespace GameUI
         {
             bool topleft = (row == 0) && (col == 0);
             bool topright = (row == 0) && (col == 7);
-            bool bottomleft = (row == 7) && (col == 0);
-            bool bottomright = (row == 7) && (col == 7);
+            bool bottomleft = (row == getBoardSize()) && (col == 0);
+            bool bottomright = (row == getBoardSize()) && (col == getBoardSize());
 
             if (topleft || bottomright)
             {
@@ -207,6 +210,13 @@ namespace GameUI
 
                 gameState.LastRow = row;
                 gameState.LastCol = col;
+
+                GameStateChanged?.Invoke(this, gameState);
+
+                if(gameState.currentNumber == 25)
+                {
+                    Level1Completed?.Invoke(this, EventArgs.Empty);
+                }
                 return true;
             } else  //current level = 2
             {
@@ -231,9 +241,22 @@ namespace GameUI
 
                 gameState.Board[row,col] = value;
                 gameState.currentNumber++;
+                GameStateChanged?.Invoke(this, gameState);
                 return true;
             }
          
+        }
+
+        private void LevelCompleted()
+        {
+            if(gameState.currentLevel == 1)
+            {
+
+                Level1Completed.Invoke(this, EventArgs.Empty);
+            } else
+            {
+                //Level 2 Complete Game Over
+            }
         }
 
         public (int, int) FindIndexInL1(int value)

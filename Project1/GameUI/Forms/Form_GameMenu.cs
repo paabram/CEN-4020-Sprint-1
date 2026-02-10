@@ -35,6 +35,7 @@ namespace GameUI
             InitializeComponent();
         }
 
+
         public Form_GameMenu(GameEngine targetEngine, GameSaver targetSaver)
         {
             InitializeComponent();

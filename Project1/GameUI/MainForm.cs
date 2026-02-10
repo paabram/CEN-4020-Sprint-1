@@ -21,17 +21,7 @@ namespace GameUI
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            
-
-
-            Form_GameMenu GameMenu = new Form_GameMenu();
-
-            EventManager EventManager = new EventManager(GameMenu);
-            GameMenu.Dock = DockStyle.Fill;
-            GameMenu.TopLevel = false;
-            panel_Forms.Controls.Clear();
-            panel_Forms.Controls.Add(GameMenu);
-            GameMenu.Show();
+             EventManager eventManager = new EventManager();
         }
     }
 }

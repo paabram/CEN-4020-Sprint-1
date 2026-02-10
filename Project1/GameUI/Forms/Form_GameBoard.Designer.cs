@@ -109,6 +109,7 @@
             this.button_1_1.Size = new System.Drawing.Size(50, 50);
             this.button_1_1.TabIndex = 1;
             this.button_1_1.UseVisualStyleBackColor = true;
+            this.button_1_1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_1_1_KeyDown);
             // 
             // button_1_2
             // 
@@ -119,6 +120,7 @@
             this.button_1_2.Size = new System.Drawing.Size(50, 50);
             this.button_1_2.TabIndex = 2;
             this.button_1_2.UseVisualStyleBackColor = true;
+            this.button_1_2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_1_2_KeyDown);
             // 
             // button_1_3
             // 
@@ -129,6 +131,7 @@
             this.button_1_3.Size = new System.Drawing.Size(50, 50);
             this.button_1_3.TabIndex = 3;
             this.button_1_3.UseVisualStyleBackColor = true;
+            this.button_1_3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_1_3_KeyDown);
             // 
             // button_1_4
             // 
@@ -139,6 +142,7 @@
             this.button_1_4.Size = new System.Drawing.Size(50, 50);
             this.button_1_4.TabIndex = 4;
             this.button_1_4.UseVisualStyleBackColor = true;
+            this.button_1_4.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_1_4_KeyDown);
             // 
             // button_1_5
             // 
@@ -149,6 +153,7 @@
             this.button_1_5.Size = new System.Drawing.Size(50, 50);
             this.button_1_5.TabIndex = 5;
             this.button_1_5.UseVisualStyleBackColor = true;
+            this.button_1_5.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_1_5_KeyDown);
             // 
             // button_2_1
             // 
@@ -159,6 +164,7 @@
             this.button_2_1.Size = new System.Drawing.Size(50, 50);
             this.button_2_1.TabIndex = 6;
             this.button_2_1.UseVisualStyleBackColor = true;
+            this.button_2_1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_2_1_KeyDown);
             // 
             // button_2_2
             // 
@@ -169,6 +175,7 @@
             this.button_2_2.Size = new System.Drawing.Size(50, 50);
             this.button_2_2.TabIndex = 7;
             this.button_2_2.UseVisualStyleBackColor = true;
+            this.button_2_2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_2_2_KeyDown);
             // 
             // button_2_3
             // 
@@ -179,6 +186,7 @@
             this.button_2_3.Size = new System.Drawing.Size(50, 50);
             this.button_2_3.TabIndex = 8;
             this.button_2_3.UseVisualStyleBackColor = true;
+            this.button_2_3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_2_3_KeyDown);
             // 
             // button_2_4
             // 
@@ -189,6 +197,7 @@
             this.button_2_4.Size = new System.Drawing.Size(50, 50);
             this.button_2_4.TabIndex = 9;
             this.button_2_4.UseVisualStyleBackColor = true;
+            this.button_2_4.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_2_4_KeyDown);
             // 
             // button_2_5
             // 
@@ -199,6 +208,7 @@
             this.button_2_5.Size = new System.Drawing.Size(50, 50);
             this.button_2_5.TabIndex = 10;
             this.button_2_5.UseVisualStyleBackColor = true;
+            this.button_2_5.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_2_5_KeyDown);
             // 
             // button_3_1
             // 
@@ -209,6 +219,7 @@
             this.button_3_1.Size = new System.Drawing.Size(50, 50);
             this.button_3_1.TabIndex = 11;
             this.button_3_1.UseVisualStyleBackColor = true;
+            this.button_3_1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_3_1_KeyDown);
             // 
             // button_3_2
             // 
@@ -219,6 +230,7 @@
             this.button_3_2.Size = new System.Drawing.Size(50, 50);
             this.button_3_2.TabIndex = 12;
             this.button_3_2.UseVisualStyleBackColor = true;
+            this.button_3_2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_3_2_KeyDown);
             // 
             // button_3_3
             // 
@@ -229,6 +241,7 @@
             this.button_3_3.Size = new System.Drawing.Size(50, 50);
             this.button_3_3.TabIndex = 13;
             this.button_3_3.UseVisualStyleBackColor = true;
+            this.button_3_3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_3_3_KeyDown);
             // 
             // button_3_4
             // 
@@ -239,6 +252,7 @@
             this.button_3_4.Size = new System.Drawing.Size(50, 50);
             this.button_3_4.TabIndex = 14;
             this.button_3_4.UseVisualStyleBackColor = true;
+            this.button_3_4.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_3_4_KeyDown);
             // 
             // button_3_5
             // 
@@ -249,6 +263,7 @@
             this.button_3_5.Size = new System.Drawing.Size(50, 50);
             this.button_3_5.TabIndex = 15;
             this.button_3_5.UseVisualStyleBackColor = true;
+            this.button_3_5.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_3_5_KeyDown);
             // 
             // button_4_1
             // 
@@ -259,6 +274,7 @@
             this.button_4_1.Size = new System.Drawing.Size(50, 50);
             this.button_4_1.TabIndex = 16;
             this.button_4_1.UseVisualStyleBackColor = true;
+            this.button_4_1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_4_1_KeyDown);
             // 
             // button_4_2
             // 
@@ -269,6 +285,7 @@
             this.button_4_2.Size = new System.Drawing.Size(50, 50);
             this.button_4_2.TabIndex = 17;
             this.button_4_2.UseVisualStyleBackColor = true;
+            this.button_4_2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_4_2_KeyDown);
             // 
             // button_4_3
             // 
@@ -279,6 +296,7 @@
             this.button_4_3.Size = new System.Drawing.Size(50, 50);
             this.button_4_3.TabIndex = 18;
             this.button_4_3.UseVisualStyleBackColor = true;
+            this.button_4_3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_4_3_KeyDown);
             // 
             // button_4_4
             // 
@@ -289,6 +307,7 @@
             this.button_4_4.Size = new System.Drawing.Size(50, 50);
             this.button_4_4.TabIndex = 19;
             this.button_4_4.UseVisualStyleBackColor = true;
+            this.button_4_4.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_4_4_KeyDown);
             // 
             // button_4_5
             // 
@@ -299,6 +318,7 @@
             this.button_4_5.Size = new System.Drawing.Size(50, 50);
             this.button_4_5.TabIndex = 20;
             this.button_4_5.UseVisualStyleBackColor = true;
+            this.button_4_5.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_4_5_KeyDown);
             // 
             // button_5_1
             // 
@@ -309,6 +329,7 @@
             this.button_5_1.Size = new System.Drawing.Size(50, 50);
             this.button_5_1.TabIndex = 21;
             this.button_5_1.UseVisualStyleBackColor = true;
+            this.button_5_1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_5_1_KeyDown);
             // 
             // button_5_2
             // 
@@ -319,6 +340,7 @@
             this.button_5_2.Size = new System.Drawing.Size(50, 50);
             this.button_5_2.TabIndex = 22;
             this.button_5_2.UseVisualStyleBackColor = true;
+            this.button_5_2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_5_2_KeyDown);
             // 
             // button_5_3
             // 
@@ -329,6 +351,7 @@
             this.button_5_3.Size = new System.Drawing.Size(50, 50);
             this.button_5_3.TabIndex = 23;
             this.button_5_3.UseVisualStyleBackColor = true;
+            this.button_5_3.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_5_3_KeyDown);
             // 
             // button_5_4
             // 
@@ -339,7 +362,7 @@
             this.button_5_4.Size = new System.Drawing.Size(50, 50);
             this.button_5_4.TabIndex = 24;
             this.button_5_4.UseVisualStyleBackColor = true;
-            // 
+            this.button_5_4.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_5_4_KeyDown);
             // button_5_5
             // 
             this.button_5_5.AutoSize = true;
@@ -349,6 +372,7 @@
             this.button_5_5.Size = new System.Drawing.Size(50, 50);
             this.button_5_5.TabIndex = 25;
             this.button_5_5.UseVisualStyleBackColor = true;
+            this.button_5_5.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button_5_5_KeyDown);
             // 
             // label_pointsText
             // 

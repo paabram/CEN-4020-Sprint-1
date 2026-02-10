@@ -11,6 +11,8 @@ namespace GameUI
     public partial class Form_GameBoard : Form
     {
         public event EventHandler ReturnRequested;
+        public event EventHandler<VPEventArgs> ValuePlaced;
+        public event EventHandler<VEEventArgs> ValueError;
         
         GameEngine gameEngine;
         GameSaver gameSaver;
@@ -72,13 +74,11 @@ namespace GameUI
 
 
 
-        public void refreshDisplay()
+        public void RefreshDisplay(GameState State)
         {
-            GameState currentState = gameEngine.GetState();
-
-            for (int i = 0; i < gameEngine.getBoardSize(); i++)
+            for (int i = 0; i < 5; i++)
             {
-                for (int j = 0; j < gameEngine.getBoardSize(); j++)
+                for (int j = 0; j < 5; j++)
                 {
                     int row = i;
                     int col = j;
@@ -86,8 +86,8 @@ namespace GameUI
                     string btnName = $"button_{row + 1}_{col + 1}";
                     var txtBox = this.Controls.Find(txtBoxName, true).FirstOrDefault() as TextBox;
                     var btn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
-                    txtBox.Text = currentState.Board[row,col].ToString();
-                    if (currentState.Board[row,col].ToString() == "")
+                    txtBox.Text = State.Board[row,col].ToString();
+                    if (State.Board[row,col].ToString() == "")
                     {
                         btn.BackColor = System.Drawing.SystemColors.Control;
                         txtBox.Enabled = true;
@@ -97,8 +97,8 @@ namespace GameUI
                     }
                 }
             }
-            label_CurrentNumber.Text = currentState.currentNumber.ToString();
-            label_currentPoints.Text = currentState.Points.ToString();
+            label_CurrentNumber.Text = State.currentNumber.ToString();
+            label_currentPoints.Text = State.Points.ToString();
         }
 
         private async void tryPlaceValue(int row, int col, string value)
@@ -206,6 +206,7 @@ namespace GameUI
 
         private void button_Undo_Click(object sender, EventArgs e)
         {
+            /*
             if (gameEngine.history.Count <= 0)
             {
                 return;
@@ -223,9 +224,11 @@ namespace GameUI
                 clearDisplay();
                 refreshDisplay();
             }
+            */
         }
         private void button_Clear_Click(object sender, EventArgs e)
         {
+            /*
             while (gameEngine.history.Count > 0)
             {
                 GameState targetState = gameEngine.history.Pop();
@@ -233,6 +236,7 @@ namespace GameUI
                 clearDisplay();
                 refreshDisplay();
             }
+            */
         }
 
         private void MoveLevel(int level)
@@ -289,14 +293,35 @@ namespace GameUI
             */
         }
 
+
+
         private void textBox_1_1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(0, 0, textBox_1_1.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_1_1.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(0, 0));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(0, 0, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_1_1.Enabled = false;
+            } 
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_1_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_2_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -305,9 +330,33 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(0, 1, textBox_1_2.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_1_2.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(0, 1));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(0, 1, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_1_2.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_1_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_1_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_2_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -316,9 +365,33 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(0, 2, textBox_1_3.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_1_3.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(0, 2));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(0, 2, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_1_3.Enabled = false;
+            } 
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_1_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_1_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_2_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -327,9 +400,33 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(0, 3, textBox_1_4.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_1_4.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(0, 3));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(0, 3, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_1_4.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_1_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_1_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_2_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -338,9 +435,28 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(0, 4, textBox_1_5.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_1_5.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(0, 4));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(0, 4, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_1_5.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_1_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_2_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -349,9 +465,33 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(1, 0, textBox_2_1.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_2_1.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(1, 0));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(1, 0, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_2_1.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_2_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_1_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_3_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -360,9 +500,38 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(1, 1, textBox_2_2.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_2_2.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(1, 1));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(1, 1, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_2_2.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_2_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_2_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_1_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_3_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -371,9 +540,38 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(1, 2, textBox_2_3.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_2_3.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(1, 2));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(1, 2, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_2_3.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_2_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_2_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_1_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_3_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -382,9 +580,38 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(1, 3, textBox_2_4.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_2_4.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(1, 3));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(1, 3, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_2_4.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_2_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_2_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_1_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_3_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -393,9 +620,33 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(1, 4, textBox_2_5.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_2_5.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(1, 4));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(1, 4, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_2_5.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_2_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_1_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_3_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -404,10 +655,35 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(2, 0, textBox_3_1.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_3_1.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(2, 0));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(2, 0, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_3_1.Enabled = false;
             }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_3_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_2_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_4_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+
         }
 
         private void textBox_3_2_KeyDown(object sender, KeyEventArgs e)
@@ -415,9 +691,38 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(2, 1, textBox_3_2.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_3_2.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(2, 1));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(2, 1, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_3_2.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_3_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_3_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_2_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_4_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -426,9 +731,38 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(2, 2, textBox_3_3.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_3_3.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(2, 2));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(2, 2, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_3_3.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_3_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_3_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_2_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_4_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -437,9 +771,38 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(2, 3, textBox_3_4.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_3_4.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(2, 3));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(2, 3, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_3_4.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_3_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_3_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_2_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_4_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -448,9 +811,33 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(2, 4, textBox_3_5.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_3_5.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(2, 4));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(2, 4, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_3_5.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_3_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_2_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_4_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -459,9 +846,33 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(3, 0, textBox_4_1.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_4_1.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(3, 0));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(3, 0, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
-                textBox_1_1.Enabled = false;
+                textBox_4_1.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_4_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_3_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_5_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -470,9 +881,38 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(3, 1, textBox_4_2.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_4_2.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(3, 1));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(3, 1, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_4_2.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_4_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_4_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_3_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_5_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -481,9 +921,38 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(3, 2, textBox_4_3.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_4_3.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(3, 2));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(3, 2, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_4_3.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_4_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_4_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_3_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_5_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -492,9 +961,38 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(3, 3, textBox_4_4.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_4_4.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(3, 3));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(3, 3, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_4_4.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_4_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_4_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_3_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_5_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -503,9 +1001,33 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(3, 4, textBox_4_5.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_4_5.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(3, 4));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(3, 4, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_4_5.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_4_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_3_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_5_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -514,9 +1036,28 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(4, 0, textBox_5_1.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_5_1.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(4, 0));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(4, 0, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_5_1.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_5_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_4_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -525,9 +1066,33 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(4, 1, textBox_5_2.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_5_2.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(4, 1));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(4, 1, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_5_2.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_5_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_5_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_4_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -536,9 +1101,33 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(4, 2, textBox_5_3.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_5_3.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(4, 2));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(4, 2, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_5_3.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_5_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_5_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_4_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -547,9 +1136,33 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(4, 3, textBox_5_4.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_5_4.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(4, 3));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(4, 3, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_5_4.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_5_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_5_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_4_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
 
@@ -558,9 +1171,512 @@ namespace GameUI
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = true;
-                tryPlaceValue(4, 4, textBox_5_5.Text);
+                int value;
+                bool isNumber = int.TryParse(textBox_5_5.Text, out value);
+                if (!isNumber)
+                {
+                    ValueError?.Invoke(this, new VEEventArgs(4, 4));
+                    return;
+                }
+
+                ValuePlaced?.Invoke(this, new VPEventArgs(4, 4, value));
+                //tryPlaceValue(0, 0, textBox_1_1.Text);
                 e.SuppressKeyPress = true;
                 textBox_5_5.Enabled = false;
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_5_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_4_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+
+        private void button_1_1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_1_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_2_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+
+        private void button_1_2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_1_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_1_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_2_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+
+        private void button_1_3_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_1_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_1_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_2_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+
+        private void button_1_4_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_1_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_1_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_2_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+
+        private void button_1_5_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_1_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_2_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+
+        private void button_2_1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_2_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_1_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_3_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+        private void button_2_2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_2_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_2_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_1_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_3_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+        private void button_2_3_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_2_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_2_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_1_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_3_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+        private void button_2_4_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_2_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_2_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_1_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_3_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+        private void button_2_5_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_2_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_1_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_3_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+
+        private void button_3_1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_3_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_2_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_4_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+        private void button_3_2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_3_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_3_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_2_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_4_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+        private void button_3_3_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_3_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_3_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_2_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_4_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+        private void button_3_4_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_3_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_3_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_2_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_4_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+        private void button_3_5_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_3_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_2_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_4_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+
+        private void button_4_1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_4_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_3_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_5_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+        private void button_4_2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_4_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_4_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_3_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_5_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+        private void button_4_3_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_4_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_4_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_3_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_5_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+        private void button_4_4_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_4_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_4_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_3_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_5_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+        private void button_4_5_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_4_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_3_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                var txtBox = this.Controls.Find("textBox_5_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+
+        private void button_5_1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_5_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_4_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+        private void button_5_2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_5_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_5_1", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_4_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+        private void button_5_3_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_5_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_5_2", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_4_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+        private void button_5_4_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Right)
+            {
+                var txtBox = this.Controls.Find("textBox_5_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_5_3", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_4_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+        }
+        private void button_5_5_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Left)
+            {
+                var txtBox = this.Controls.Find("textBox_5_4", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                var txtBox = this.Controls.Find("textBox_4_5", true).FirstOrDefault() as TextBox;
+                txtBox.Focus();
             }
         }
     }
