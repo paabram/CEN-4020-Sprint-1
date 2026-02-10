@@ -6,12 +6,15 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D2A49216-21C6-46D9-8D85-892184A731EC}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>UserDisplay</RootNamespace>
-    <AssemblyName>UserDisplay</AssemblyName>
+    <RootNamespace>GameUI</RootNamespace>
+    <AssemblyName>GameUI</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+	<Nullable>enable</Nullable>
+	<LangVersion>latest</LangVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -61,36 +64,46 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form_GameBoardLvl2.cs">
+    <Compile Include="EventManager.cs" />
+    <Compile Include="Forms\Form_GameBoardLvl2.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form_GameBoardLvl2.Designer.cs">
+    <Compile Include="Forms\Form_GameBoardLvl2.Designer.cs">
       <DependentUpon>Form_GameBoardLvl2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form_GameBoard.cs">
+    <Compile Include="Forms\Form_GameBoard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form_GameBoard.Designer.cs">
+    <Compile Include="Forms\Form_GameBoard.Designer.cs">
       <DependentUpon>Form_GameBoard.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form_GameMenu.cs">
+    <Compile Include="Forms\Form_GameMenu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form_GameMenu.Designer.cs">
+    <Compile Include="Forms\Form_GameMenu.Designer.cs">
       <DependentUpon>Form_GameMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="GameEngine.cs" />
     <Compile Include="GameSaver.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form_GameBoardLvl2.resx">
+    <EmbeddedResource Include="Forms\Form_GameBoardLvl2.resx">
       <DependentUpon>Form_GameBoardLvl2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form_GameBoard.resx">
+    <EmbeddedResource Include="Forms\Form_GameBoard.resx">
       <DependentUpon>Form_GameBoard.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form_GameMenu.resx">
+    <EmbeddedResource Include="Forms\Form_GameMenu.resx">
       <DependentUpon>Form_GameMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -125,5 +138,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

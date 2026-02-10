@@ -101,6 +101,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.button_LeaderBoard2);
             this.Controls.Add(this.button_LeaderBoard1);
@@ -108,6 +109,7 @@
             this.Controls.Add(this.button_Exit);
             this.Controls.Add(this.button_LoadGame);
             this.Controls.Add(this.button_NewGame);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form_GameMenu";
             this.Text = "Form_GameMenu";
             this.ResumeLayout(false);

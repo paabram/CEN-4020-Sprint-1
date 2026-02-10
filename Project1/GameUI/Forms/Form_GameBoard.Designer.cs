@@ -804,6 +804,7 @@
             this.Controls.Add(this.button_1_2);
             this.Controls.Add(this.button_1_1);
             this.Controls.Add(this.button_ReturnToMenu);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form_GameBoard";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_GameBoard_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form_GameBoard_FormClosed);

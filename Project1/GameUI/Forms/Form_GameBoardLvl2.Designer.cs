@@ -1103,6 +1103,7 @@
             this.Controls.Add(this.button_4_7);
             this.Controls.Add(this.button_5_7);
             this.Controls.Add(this.button_6_7);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form_GameBoardLvl2";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_GameBoardLvl2_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form_GameBoardLvl2_FormClosed);

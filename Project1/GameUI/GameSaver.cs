@@ -1,3 +1,4 @@
+using GameUI;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -13,13 +14,17 @@ namespace GameUI
     {
         private int boardSize;
 
-
-        public GameSaver(int boardSize)
+        public GameSaver()
         {
-            this.boardSize = boardSize;
+            boardSize = 5;
         }
 
-        public int getLatestFileNumber()
+        public GameSaver(int BoardSize)
+        {
+            boardSize = BoardSize;
+        }
+
+        public int getLastFileNo()
         {
             string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
             string targetDirectory = currentDirectory + "Saves";
@@ -68,6 +73,16 @@ namespace GameUI
                 Directory.CreateDirectory(baseDirectory + "\\Saves");
             }
 
+            WriteToFile(file, state);
+            
+        }
+
+      
+
+
+
+        private void WriteToFile(string file, GameState state)
+        {
             using (StreamWriter w = new StreamWriter(file, append: true))
             {
                 w.WriteLine(state.currentNumber);
@@ -181,6 +196,10 @@ namespace GameUI
             }
             return results;
         }
+
+
     }
 }
+
+
 

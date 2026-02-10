@@ -7,6 +7,12 @@ namespace GameUI
 {
     public partial class Form_GameMenu : Form
     {
+        public event EventHandler LoadRequested;
+        public event EventHandler ExitRequested;
+        public event EventHandler NewGameRequested;
+        public event EventHandler ContinueRequested;
+
+
         Form_GameBoard gameBoard;
         Form_GameBoardLvl2 gameBoardLvl2;
         GameEngine gameEngine;
@@ -38,54 +44,17 @@ namespace GameUI
 
         private void button_NewGame_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            gameBoard.Show();
-            gameBoard.refreshDisplay();
+            NewGameRequested?.Invoke(this, EventArgs.Empty);    
         }
 
         private void button_LoadGame_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            string filePath = AppDomain.CurrentDomain.BaseDirectory + "Saves\\";
-            openFileDialog.InitialDirectory = filePath;
-            openFileDialog.Title = "Select Save File";
-            openFileDialog.CheckFileExists = true;
-            openFileDialog.CheckPathExists = true;
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                List<GameState> loadStates = gameSaver.Load(openFileDialog.FileName);
-                for (int i = loadStates.Count - 1; i >= 0; i--)
-                {
-                    if (i == 0)
-                    {
-                        gameEngine.SetState(loadStates[i]);
-                    }
-                    else
-                    {
-                        gameEngine.history.Push(loadStates[i]);
-                    }
-                }
-                if(gameEngine.GetCurrentLevel() == 1)
-                {
-                    this.Hide();
-                    gameBoard.Show();
-                    gameBoard.refreshDisplay();
-                } else
-                {
-                    gameEngine.setBoardSize(7);
-                    this.Hide();
-                    gameBoardLvl2.Show();
-                    gameBoardLvl2.refreshDisplay(); 
-                }
-
-            } 
+            LoadRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void button_Exit_Click(object sender, EventArgs e)
         {
-
+            ExitRequested?.Invoke(this, EventArgs.Empty);
         }
 
         public void changeContinueVisibility(bool visible)
@@ -95,18 +64,22 @@ namespace GameUI
 
         private void button_Continue_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            if(gameEngine.GetCurrentLevel() == 1)
-            {
-                gameBoard.Show();
-            } else
-            {
-                gameBoardLvl2.Show();
-            }
+            ContinueRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void EnableContinue()
+        {
+            button_Continue.Visible = true;
+        }
+
+        public void DisableContinue()
+        {
+            button_Continue.Visible = false;
         }
 
         private void button_LeaderBoard1_Click(object sender, EventArgs e)
         {
+            /*
             string str = "\r\n";
             int fileNumber = gameSaver.getLatestFileNumber();
             GameState tempState;
@@ -187,10 +160,12 @@ namespace GameUI
             {
                 MessageBox.Show("No records to show.");
             }
+            */
         }
 
         private void button_LeaderBoard2_Click(object sender, EventArgs e)
         {
+            /*
             string str = "\r\n";
             int fileNumber = gameSaver.getLatestFileNumber();
             GameState tempState;
@@ -271,6 +246,8 @@ namespace GameUI
             {
                 MessageBox.Show("No records to show.");
             }
+          */
         }
+
     }
 }
