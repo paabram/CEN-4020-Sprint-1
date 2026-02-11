@@ -1,19 +1,27 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Text.Json.Serialization;
 
 namespace GameUI
 {
+    [Serializable]
     public class GameState
     {
-        public int?[,] Board;
-        public int Points;
-        public int LastRow;
-        public int LastCol;
-        public int currentNumber;
-        public int currentLevel;
-        public string userName;
-        public string saveDateTime;
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public int?[,] Board { get; set; }
+        public int Points { get; set; }
+        public int LastRow { get; set; }
+        public int LastCol { get; set; }
+        public int currentNumber { get; set; }
+        public int currentLevel { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string userName { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string saveDateTime { get; set; }
 
         public GameState()
         {
@@ -102,7 +110,9 @@ namespace GameUI
         public EventHandler<GameState> GameStateChanged;
         public EventHandler Level1Completed;
         
-        
+        public List<GameState> GetHistory() { return new List<GameState>(history); }
+
+        public void SetHistory(List<GameState> History) { history = new Stack<GameState>(History); }
 
         public GameEngine()
         {
@@ -178,6 +188,26 @@ namespace GameUI
             }
         }
 
+        public void UndoLastMove()
+        {
+            if (history.Count <= 0)
+            {
+                return;
+            }
+            else if (history.Count == 1)
+            {
+                GameState targetState = new GameState(history.Pop());
+                SetState(targetState);
+            }
+            else
+            {
+                GameState targetState = history.Pop();
+                SetState(targetState);
+            }
+            GameStateChanged?.Invoke(this, gameState);
+            return;
+        }
+
         public bool Place(int value, int row, int col)
         {
 
@@ -213,7 +243,7 @@ namespace GameUI
 
                 GameStateChanged?.Invoke(this, gameState);
 
-                if(gameState.currentNumber == 25)
+                if (gameState.currentNumber == 26)
                 {
                     Level1Completed?.Invoke(this, EventArgs.Empty);
                 }
@@ -236,8 +266,8 @@ namespace GameUI
                     return false;
                 }
 
-                GameState previousMove = new GameState(GetState());
-                history.Push(previousMove);
+
+                history.Push(new GameState(GetState()));
 
                 gameState.Board[row,col] = value;
                 gameState.currentNumber++;
@@ -251,7 +281,6 @@ namespace GameUI
         {
             if(gameState.currentLevel == 1)
             {
-
                 Level1Completed.Invoke(this, EventArgs.Empty);
             } else
             {

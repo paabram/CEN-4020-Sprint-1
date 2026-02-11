@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameUI.Forms;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -13,17 +14,16 @@ namespace GameUI
     public class EventManager
     {
         GameEngine Engine;
-        GameSaver Saver;
 
         private Form_GameMenu _menu;
         private Form_GameBoard _gameboard;
         private Form_GameBoardLvl2 _gameboard_lvl2;
+        private Form_LeaderBoard _leaderboard;
 
 
         public EventManager()
         {
             Engine = new GameEngine(5);
-            Saver = new GameSaver(5);
             DisplayGameMenu();
 
             Engine.Level1Completed += OnLevel1Completed;
@@ -46,6 +46,8 @@ namespace GameUI
             _gameboard.ReturnRequested += OnReturnRequested;
             _gameboard.ValuePlaced += OnValuePlaced;
             _gameboard.ValueError += OnValueError;
+            _gameboard.SaveRequested += OnSaveRequested;
+            _gameboard.UndoRequested += OnUndoRequested;
 
             _gameboard.Show();
         }
@@ -67,6 +69,7 @@ namespace GameUI
             _menu.ExitRequested += OnExitRequested;
             _menu.LoadRequested += OnLoadRequested;
             _menu.ContinueRequested += OnContinueRequested;
+            _menu.LeaderBoard1Requested += OnLeaderBoard1Requested;
 
             _menu.Show();
 
@@ -90,6 +93,24 @@ namespace GameUI
             _gameboard_lvl2.Show();
         }
 
+        private void DisplayLeaderBoard()
+        {
+            if (_leaderboard != null && !_leaderboard.IsDisposed)
+            {
+                _leaderboard.Dispose();
+            }
+
+            _leaderboard = new Form_LeaderBoard();
+            _leaderboard.Dock = DockStyle.Fill;
+            _leaderboard.TopLevel = false;
+            MainForm.MainPanel.Controls.Clear();
+            MainForm.MainPanel.Controls.Add(_leaderboard);
+            //Subscribe all events that LeaderBoard requires
+            _leaderboard.ReturnToMenuRequested += OnReturnRequested;
+
+            _leaderboard.Show();
+        }
+
         private void OnReturnRequested(object sender, EventArgs e)
         {
             DisplayGameMenu();
@@ -111,21 +132,48 @@ namespace GameUI
         private void OnLoadRequested(object sender, EventArgs e)
         {
             //Load game here
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            OpenFileDialog LoadFileDialog = new OpenFileDialog();
 
-            string filePath = AppDomain.CurrentDomain.BaseDirectory + "Saves\\";
-            openFileDialog.InitialDirectory = filePath;
-            openFileDialog.Title = "Select Save File";
-            openFileDialog.CheckFileExists = true;
-            openFileDialog.CheckPathExists = true;
+            LoadFileDialog.Title = "Select a saved game to load";
+            LoadFileDialog.InitialDirectory = "./Saves";
+            LoadFileDialog.Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*";
+            LoadFileDialog.FilterIndex = 1;
+            LoadFileDialog.RestoreDirectory = true;
 
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            if (LoadFileDialog.ShowDialog() == DialogResult.OK)
             {
-                List<GameState> loadStates = Saver.Load(openFileDialog.FileName);
+                List<GameState> LoadedStates = GameSaver.LoadGame(LoadFileDialog.FileName);
+                Engine.SetState(LoadedStates.Last());
+
+                List<GameState> history = LoadedStates.GetRange(0, LoadedStates.Count - 1);
+                history.Reverse();
+
+                Engine.SetHistory(history);
+
+                DisplayGameBoard();
+
+                _gameboard.RefreshDisplay(Engine.GetState());
             }
+        }
 
+        private async void OnSaveRequested(object sender, EventArgs e)
+        {
+            //Save game here
+            int fileNo = GameSaver.getLastFileNo() + 1;
+            string fileName = $"./Saves/Save{fileNo}.json";
+            List<GameState> GameStates = Engine.GetHistory();
+            GameStates.Add(Engine.GetState());
+            var Save = GameSaver.SaveGameToJson(fileName, GameStates);
 
-            DisplayGameBoard();
+            try
+            {
+                await Save;
+                MessageBox.Show($"Game saved successfully as Save{fileNo}.json!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving game: {ex.Message}");
+            }
         }
 
         private void OnContinueRequested(object sender, EventArgs e)
@@ -176,6 +224,9 @@ namespace GameUI
         private void OnLevel1Completed(object sender, EventArgs e)
         {
             //Play Success Sound
+
+            GenerateLeaderBoardEntry(this, EventArgs.Empty);
+
             DialogResult dr = MessageBox.Show("Congratulations! You Won! Would you like to move on to level 2?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
             if (dr == DialogResult.Yes)
             {
@@ -186,6 +237,12 @@ namespace GameUI
                 OnReturnRequested(this, EventArgs.Empty);
             }
 
+        }
+
+        private void GenerateLeaderBoardEntry(object sender, EventArgs e)
+        {
+            GameState currentState = Engine.GetState();
+            _ = GameSaver.SaveLeaderBoardToJsonAsync(currentState, "./Leaderboards/LeaderBoards.json");
         }
 
         private void OnGameStateChanged(object sender, GameState State)
@@ -202,7 +259,23 @@ namespace GameUI
             }
         }
 
+        private void OnLeaderBoard1Requested(object sender, EventArgs e)
+        {
+           //generate a list of leaderboard entries as GameStates
+            List<GameState> leaderboardEntries = new List<GameState>();
+            //populate the list with data from your leaderboard
+            leaderboardEntries = GameSaver.GetLeaderBoardList("./Leaderboards/LeaderBoards.json");
 
+            //Display the leaderboard form and pass the list of entries to it
+            DisplayLeaderBoard();
+
+            _leaderboard.LoadLeaderBoard(leaderboardEntries);
+        }
+
+        private void OnUndoRequested(object sender, EventArgs e)
+        {
+            Engine.UndoLastMove();
+        }
     }
 
     /*

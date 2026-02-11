@@ -13,64 +13,15 @@ namespace GameUI
         public event EventHandler ReturnRequested;
         public event EventHandler<VPEventArgs> ValuePlaced;
         public event EventHandler<VEEventArgs> ValueError;
-        
-        GameEngine gameEngine;
-        GameSaver gameSaver;
-        Form_GameBoardLvl2 gameBoardLvl2;
+        public event EventHandler SaveRequested;
+        public event EventHandler UndoRequested;
 
-        EventManager EventManager;
-
-        bool gameInProgress = false;
-
-        public void setGameInProgress(bool gameInProgress)
-        { 
-            this.gameInProgress = gameInProgress; 
-        }
-
-        public bool isGameInProgress() { return gameInProgress; }   
 
         public Form_GameBoard()
         {
             InitializeComponent();
         }
 
-        public Form_GameBoard(GameEngine targetEngine, GameSaver targetSaver, Form_GameBoardLvl2 gameBoardLv2)
-        {
-            InitializeComponent();
-            this.gameEngine = targetEngine;
-            this.gameEngine.placeRandomOne();
-            this.gameSaver = targetSaver;
-            this.gameBoardLvl2 = gameBoardLv2;
-        }
-
-        public Form_GameBoard(EventManager eventManager)
-        {
-            InitializeComponent();
-            EventManager = eventManager;
-        }
-
-
-
-        public void clearDisplay()
-        {
-            for (int i = 0; i < gameEngine.getBoardSize(); i++)
-            {
-                for (int j = 0; j < gameEngine.getBoardSize(); j++)
-                {
-                    int row = i;
-                    int col = j;
-                    string btnName = $"button_{row + 1}_{col + 1}";
-                    string txtBoxName = $"textBox_{row + 1}_{col + 1}";
-                    var btn = this.Controls.Find(btnName, true).FirstOrDefault() as Button;
-                    var txtBox = this.Controls.Find(txtBoxName, true).FirstOrDefault() as TextBox;
-                    txtBox.Text = "";
-                    btn.BackColor = System.Drawing.SystemColors.Control;
-                }
-            }
-
-            label_CurrentNumber.Text = "1";
-            label_currentPoints.Text = "0";
-        }
 
 
 
@@ -206,25 +157,7 @@ namespace GameUI
 
         private void button_Undo_Click(object sender, EventArgs e)
         {
-            /*
-            if (gameEngine.history.Count <= 0)
-            {
-                return;
-            }
-            else if (gameEngine.history.Count == 1)
-            {
-                GameState targetState = new GameState(gameEngine.history.Pop());
-                gameEngine.SetState(targetState);
-                clearDisplay();
-                refreshDisplay();
-            } else 
-            {
-                GameState targetState = gameEngine.history.Pop();
-                gameEngine.SetState(targetState);
-                clearDisplay();
-                refreshDisplay();
-            }
-            */
+            UndoRequested?.Invoke(this, EventArgs.Empty);
         }
         private void button_Clear_Click(object sender, EventArgs e)
         {
@@ -260,37 +193,7 @@ namespace GameUI
         
         private void button_Save_Click(object sender, EventArgs e)
         {
-            /*
-            int fileNumber = gameSaver.getLatestFileNumber();
-            string filepath = AppDomain.CurrentDomain.BaseDirectory;
-
-            if (fileNumber == 0)
-            {
-                string savepath = filepath + "/Saves/Save1.txt";
-                gameSaver.Save(savepath, gameEngine.GetState());
-                foreach (GameState state in gameEngine.history)
-                {
-                    gameSaver.Save(savepath, state);
-                }
-            } else if(fileNumber > 25)
-            {
-                fileNumber = 1;
-                string savepath = filepath + $"Saves\\Save{fileNumber + 1}.txt";
-                gameSaver.Save(savepath, gameEngine.GetState());
-                foreach (GameState state in gameEngine.history)
-                {
-                    gameSaver.Save(savepath, state);
-                }
-            } else 
-            {
-                string savepath = filepath + $"Saves/Save{fileNumber + 1}.txt";
-                gameSaver.Save(savepath, gameEngine.GetState());
-                foreach (GameState state in gameEngine.history)
-                {
-                    gameSaver.Save(savepath, state);
-                }
-            }
-            */
+            SaveRequested?.Invoke(this, EventArgs.Empty);
         }
 
 
