@@ -1188,7 +1188,7 @@ namespace GameUI
         {
             if (e.KeyCode == Keys.Right)
             {
-                var txtBox = this.Controls.Find("textBox_2_1", true).FirstOrDefault() as TextBox;
+                var txtBox = this.Controls.Find("textBox_2_2", true).FirstOrDefault() as TextBox;
                 txtBox.Focus();
             }
             else if (e.KeyCode == Keys.Up)

@@ -69,8 +69,9 @@ namespace GameUI
             }
             string jsonString = File.ReadAllText(file);
 
+            List<GameState> gameStates = JsonConvert.DeserializeObject<List<GameState>>(jsonString);
 
-            return JsonConvert.DeserializeObject<List<GameState>>(jsonString);
+            return gameStates;
         }
 
         public static async Task SaveLeaderBoardToJsonAsync(GameState state, string filepath)
@@ -80,17 +81,30 @@ namespace GameUI
                 File.Create(filepath).Close();
             }
 
+            string jsonString = File.ReadAllText(filepath);
 
-            string jsonString = JsonConvert.SerializeObject(state);
+            List<GameState> LeaderBoards = JsonConvert.DeserializeObject<List<GameState>>(jsonString);
+            
+            if (LeaderBoards == null)
+            {
+                LeaderBoards = new List<GameState>();
+            }
 
-            await Task.Run(() => File.AppendAllText(filepath, jsonString));
+            LeaderBoards.Add(state);
+            string jsonOutput = JsonConvert.SerializeObject(LeaderBoards, Formatting.Indented);
+
+
+
+            await Task.Run(() => File.WriteAllText(filepath, jsonOutput));
         }
 
         public static List<GameState> GetLeaderBoardList(string filepath)
         {
             string jsonString = File.ReadAllText(filepath);
 
-            return JsonConvert.DeserializeObject<List<GameState>>(jsonString);
+            List<GameState> gameStates = JsonConvert.DeserializeObject<List<GameState>>(jsonString);
+
+            return gameStates;
 
         }
 

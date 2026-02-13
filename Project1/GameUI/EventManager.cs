@@ -224,8 +224,16 @@ namespace GameUI
         private void OnLevel1Completed(object sender, EventArgs e)
         {
             //Play Success Sound
+            string Username = Prompt.ShowDialog("Congratulations! You've completed level 1! Please enter your name for the leaderboard.", "");
+            DateTime CurrentTime = DateTime.Now;
 
-            GenerateLeaderBoardEntry(this, EventArgs.Empty);
+            GameState currentState = Engine.GetState();
+
+            currentState.userName = Username;
+            currentState.saveDateTime = CurrentTime.ToString();
+
+
+            GenerateLeaderBoardEntry(this, currentState);
 
             DialogResult dr = MessageBox.Show("Congratulations! You Won! Would you like to move on to level 2?", "", MessageBoxButtons.YesNo, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, MessageBoxOptions.ServiceNotification);
             if (dr == DialogResult.Yes)
@@ -239,10 +247,9 @@ namespace GameUI
 
         }
 
-        private void GenerateLeaderBoardEntry(object sender, EventArgs e)
+        private void GenerateLeaderBoardEntry(object sender, GameState State)
         {
-            GameState currentState = Engine.GetState();
-            _ = GameSaver.SaveLeaderBoardToJsonAsync(currentState, "./Leaderboards/LeaderBoards.json");
+            _ = GameSaver.SaveLeaderBoardToJsonAsync(State, "./Leaderboards/LeaderBoards.json");
         }
 
         private void OnGameStateChanged(object sender, GameState State)

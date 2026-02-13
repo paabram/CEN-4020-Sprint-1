@@ -29,11 +29,11 @@ namespace GameUI.Forms
             dataGridView_LeaderBoardDisplay.DataSource = null;
 
             dataGridView_LeaderBoardDisplay.DataSource = leaderboardEntries.Where(e => e.currentLevel == 1)
-                                                                           .Select(entry => new 
+                                                                           .Select(e => new 
                                                                            {
-                                                                                Name = entry.userName,
-                                                                                Date = entry.saveDateTime,
-                                                                                entry.Points
+                                                                                Name = e.userName,
+                                                                                Date = e.saveDateTime,
+                                                                                e.Points
                                                                            }).ToList();
         }
     }

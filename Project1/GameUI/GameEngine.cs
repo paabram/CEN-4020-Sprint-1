@@ -210,7 +210,7 @@ namespace GameUI
 
         public bool Place(int value, int row, int col)
         {
-
+            bool isCurrentNumber = value == gameState.currentNumber;
             bool occupied = gameState.Board[row, col].HasValue;
             bool outOfBounds = (row < 0 || row >= _size || col < 0 || col >= _size);
             bool isNotAdjacentRow = ((gameState.LastRow != -1 && gameState.LastRow > row + 1) || (gameState.LastRow != -1 && gameState.LastRow < row - 1));
@@ -218,7 +218,7 @@ namespace GameUI
 
             if(GetCurrentLevel() == 1)
             {
-                if (occupied || outOfBounds || isNotAdjacentRow || isNotAdjacentCol)
+                if (!isCurrentNumber || occupied || outOfBounds || isNotAdjacentRow || isNotAdjacentCol)
                 {
                     return false;
                 }
